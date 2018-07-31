@@ -4,6 +4,7 @@ package com.oocl.parking.controllers;
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.exceptions.BadRequestException;
+import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

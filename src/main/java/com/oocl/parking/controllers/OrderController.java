@@ -1,10 +1,8 @@
 package com.oocl.parking.controllers;
 
-import com.oocl.parking.entities.Order;
+import com.oocl.parking.entities.Orders;
 import com.oocl.parking.services.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,19 +16,19 @@ public class OrderController {
 
     @Transactional
     @PostMapping(path = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order addOrder(Order order){
-        return orderService.addOrder(order);
+    public Orders addOrder(Orders orders){
+        return orderService.addOrder(orders);
     }
 
     @Transactional
     @GetMapping(path = "/orders",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Order> getOrders(){
+    public List<Orders> getOrders(){
         return orderService.getOrders();
     }
 
     @Transactional
     @PatchMapping(path = "/orders/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order updateOrderById(@PathVariable Long id){
+    public Orders updateOrderById(@PathVariable Long id){
         return orderService.updateOrderById(id);
     }
 

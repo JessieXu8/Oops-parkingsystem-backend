@@ -25,5 +25,5 @@
 /nbdist/
 /.nb-gradle/
 
-###
-*.log
+### log filse ###
+/logs/

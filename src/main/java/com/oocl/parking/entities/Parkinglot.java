@@ -20,8 +20,8 @@ public class Parkinglot {
     private String status;
 
     @OneToOne
-    @JoinColumn(name = "employeeId")
-    private Employee employee;
+    @JoinColumn(name = "userId")
+    private User user;
 
 
     public Parkinglot() {
@@ -41,11 +41,11 @@ public class Parkinglot {
         this.status = status;
     }
 
-    public Parkinglot(String name, int size, String status, Employee employee) {
+    public Parkinglot(String name, int size, String status, User user) {
         this.name = name;
         this.size = size;
         this.status = status;
-        this.employee = employee;
+        this.user = user;
     }
 
     public Long getId() {
@@ -80,12 +80,12 @@ public class Parkinglot {
         this.status = status;
     }
 
-    public Employee getEmployee() {
-        return employee;
+    public User getUser() {
+        return user;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getCountOfCars() {

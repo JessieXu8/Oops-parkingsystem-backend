@@ -8,7 +8,7 @@ public class ParkinglotDto {
     private int size;
     private String status;
     private int countOfCars;
-    private Long employeeId;
+    private Long userId;
 
     public ParkinglotDto() {
     }
@@ -19,8 +19,8 @@ public class ParkinglotDto {
         this.size = parkinglot.getSize();
         this.status = parkinglot.getStatus();
         this.countOfCars = parkinglot.getCountOfCars();
-        if(parkinglot.getEmployee() != null)
-            this.employeeId = parkinglot.getEmployee().getId();
+        if(parkinglot.getUser() != null)
+            this.userId = parkinglot.getUser().getId();
     }
 
     public Long getId() {
@@ -39,8 +39,8 @@ public class ParkinglotDto {
         return status;
     }
 
-    public Long getEmployeeId() {
-        return employeeId;
+    public Long getUserId() {
+        return userId;
     }
 
     public int getCountOfCars() {

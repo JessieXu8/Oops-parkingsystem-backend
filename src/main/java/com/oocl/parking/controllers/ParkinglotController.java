@@ -58,4 +58,20 @@ public class ParkinglotController {
         }
         throw new BadRequestException();
     }
+
+    @PutMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity park(@PathVariable(value = "id") Long id){
+        if(parkinglotService.park(id)){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        throw new BadRequestException("parked failed");
+    }
+
+    @DeleteMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity unpark(@PathVariable(value = "id") Long id){
+        if(parkinglotService.unpark(id)){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        throw new BadRequestException("unpark failed");
+    }
 }

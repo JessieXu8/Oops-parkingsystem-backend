@@ -20,7 +20,7 @@ public class api_test_parkinglot {
         requestSpec = new RequestSpecBuilder().
                 setBaseUri("http://localhost").
                 setPort(8080).
-                setBasePath("/api/v1").
+                setBasePath("/api/v1/parkinglots").
                 build();
     }
 
@@ -32,19 +32,21 @@ public class api_test_parkinglot {
                 .body(parkinglot)
                 .contentType(ContentType.JSON)
         .when()
-                .post("/parkinglots")
+                .post("")
         .then().log().all()
                 .statusCode(201);
 
     }
 
+    
     @Test
-    public void should_get_bad_request_when_get_call_given_no_lots(){
+    public void should_get_bad_request_when_park_fail(){
         given()
-            .spec(requestSpec)
-        .when()
-            .get("/parkinglots")
-        .then()
-            .statusCode(200);
+                .spec(requestSpec)
+                .when()
+                .put("10/park")
+                .then()
+                .statusCode(400);
+
     }
 }

@@ -57,4 +57,24 @@ public class ParkinglotService {
         parkinglotRepository.save(parkinglot);
         return true;
     }
+
+    public boolean park(Long id) {
+        Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+        if(parkinglot == null || parkinglot.isFull()){
+            return false;
+        }
+        parkinglot.park();
+        parkinglotRepository.save(parkinglot);
+        return true;
+    }
+
+    public boolean unpark(Long id) {
+        Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+        if(parkinglot == null || parkinglot.isEmpty()){
+            return false;
+        }
+        parkinglot.unpark();
+        parkinglotRepository.save(parkinglot);
+        return true;
+    }
 }

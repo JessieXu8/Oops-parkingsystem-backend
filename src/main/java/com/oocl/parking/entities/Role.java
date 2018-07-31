@@ -24,7 +24,9 @@ public class Role {
     private List<Privilege> privileges = new ArrayList<>();
     public Role() {
     }
-
+    public Role(String role) {
+        this.role = role;
+    }
     public List<User> getUserList() {
         return userList;
     }

@@ -1,6 +1,8 @@
 package com.oocl.parking.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Table(name = "parkinglot")
@@ -94,5 +96,15 @@ public class Parkinglot {
 
     public void setCountOfCars(int countOfCars) {
         this.countOfCars = countOfCars;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty(){
+        return countOfCars==0;
+    }
+
+    @JsonIgnore
+    public boolean isFull(){
+        return countOfCars>=size;
     }
 }

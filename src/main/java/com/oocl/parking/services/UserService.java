@@ -5,6 +5,8 @@ import com.oocl.parking.entities.User;
 import com.oocl.parking.repositories.RoleRepository;
 import com.oocl.parking.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +43,22 @@ public class UserService {
 
     public List<Role> findAllRole(Pageable pageable) {
         return roleRepository.findAll(pageable).getContent();
+    }
+
+    public List<User> findAllUserByRole(String role, Pageable pageable) {
+
+        List<Role> roleList = roleRepository.findByRole(role);
+        Role userRole = new Role((long) -1,role);
+        if(roleList!=null&&roleList.size()!=0){
+            userRole.setId(roleList.get(0).getId());
+        }
+
+        User user = new User();
+        user.setRole(userRole);
+
+        ExampleMatcher matcher = ExampleMatcher.matching();
+
+        Example<User> ex = Example.of(user, matcher);
+      return userRepository.findAll(ex,pageable).getContent();
     }
 }

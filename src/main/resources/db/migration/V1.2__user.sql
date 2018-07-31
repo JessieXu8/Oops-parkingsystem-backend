@@ -9,6 +9,6 @@ CREATE TABLE `user` (
   `account_status` varchar(20) NOT NULL,
   `role_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 INSERT INTO `user` VALUES (1, 'root', 'admin', '系统管理员', 'm18390990364@163.com', '18390990364', null, 'normal', 1);

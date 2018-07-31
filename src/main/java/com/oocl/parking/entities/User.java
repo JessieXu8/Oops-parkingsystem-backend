@@ -29,6 +29,10 @@ public class User {
 
     }
 
+    public User(String name) {
+        this.name = name;
+    }
+
     public String getAccount_status() {
         return account_status;
     }

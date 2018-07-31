@@ -37,10 +37,10 @@ public class UserController {
     public  User addUser(@RequestBody User user){
         return userService.addUser(user);
     }
-    @PatchMapping("/{id}")
+    @PatchMapping("/id={id}")
     @ResponseBody
-    public ResponseEntity updateUserByRole(@RequestBody Role role){
-        userService.updateUserByRole(role);
+    public ResponseEntity updateUserByRole(@PathVariable Long id,@RequestBody Role role){
+        userService.updateUserByRole(id,role);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

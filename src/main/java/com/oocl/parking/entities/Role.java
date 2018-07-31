@@ -2,6 +2,7 @@ package com.oocl.parking.entities;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "role")
@@ -16,10 +17,11 @@ public class Role {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.LAZY)
     private List<User> userList;
 
-    public Role(String role) {
-        this.role = role;
-    }
-
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "role_privilege",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "privilege_id"))
+    private List<Privilege> privileges = new ArrayList<>();
     public Role() {
     }
 

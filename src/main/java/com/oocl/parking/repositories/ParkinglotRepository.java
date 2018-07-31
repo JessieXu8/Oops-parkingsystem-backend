@@ -20,4 +20,5 @@ public interface ParkinglotRepository extends JpaRepository<Parkinglot, Long> {
     List<Parkinglot> findByStatus(Pageable page,String status);
 
     List<Parkinglot> findByStatus(String status);
+    List<Parkinglot> findByStatusAndUserNotNull(Pageable page, String status);
 }

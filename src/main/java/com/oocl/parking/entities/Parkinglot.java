@@ -29,6 +29,9 @@ public class Parkinglot {
     public Parkinglot() {
     }
 
+    public Parkinglot(Long id) {
+        this.id = id;
+    }
 
     public Parkinglot(String name, int size, String status) {
         this.name = name;

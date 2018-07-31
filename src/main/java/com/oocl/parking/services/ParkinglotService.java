@@ -4,6 +4,7 @@ import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class ParkinglotService {
     }
 
 
-    public List<ParkinglotDto> getAllParkinglots() {
-        return parkinglotRepository.findAll()
+    public List<ParkinglotDto> getAllParkinglots(Pageable page) {
+        return parkinglotRepository.findAll(page)
             .stream().map(ParkinglotDto::new).collect(Collectors.toList());
     }
 
@@ -54,6 +55,26 @@ public class ParkinglotService {
         }else{
             parkinglot.setStatus("open");
         }
+        parkinglotRepository.save(parkinglot);
+        return true;
+    }
+
+    public boolean park(Long id) {
+        Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+        if(parkinglot == null || parkinglot.isFull()){
+            return false;
+        }
+        parkinglot.park();
+        parkinglotRepository.save(parkinglot);
+        return true;
+    }
+
+    public boolean unpark(Long id) {
+        Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+        if(parkinglot == null || parkinglot.isEmpty()){
+            return false;
+        }
+        parkinglot.unpark();
         parkinglotRepository.save(parkinglot);
         return true;
     }

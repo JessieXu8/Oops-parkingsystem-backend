@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import java.util.Arrays;
 import static org.hamcrest.Matchers.hasSize;
@@ -29,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ParkinglotController.class)
+@EnableSpringDataWebSupport
 public class ParkinglotControllerTest {
 
     @Autowired
@@ -44,10 +48,10 @@ public class ParkinglotControllerTest {
     public void should_get_parkinglot_dto_list_when_get_parkinglots() throws Exception {
     // given
         Parkinglot parkinglot = new Parkinglot("test1", 10, "open");
-        given(parkinglotService.getAllParkinglots()).willReturn(Arrays.asList(new ParkinglotDto(parkinglot)));
+        given(parkinglotService.getAllParkinglots(any(Pageable.class))).willReturn(Arrays.asList(new ParkinglotDto(parkinglot)));
     // when
     // then
-        mockMvc.perform(get("/api/v1/parkinglots").contentType(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/api/v1/parkinglots?page=0&size=1").contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].name", is("test1")))
                 .andExpect(jsonPath("$[0].size", is(10)))

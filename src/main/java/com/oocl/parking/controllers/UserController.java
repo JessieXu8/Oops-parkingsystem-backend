@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
@@ -22,8 +23,20 @@ public class UserController {
 
     @GetMapping("")
     @ResponseBody
-    public List<User> findAllUsers(Pageable pageable){
-    return userService.findAllUser(pageable);
+    public List<User> findAllUsers(@RequestParam(required=false,name="role")String role,Pageable pageable){
+        System.out.println("role"+role);
+        if(role!=""&&role!=null){
+            return userService.findAllUserByRole(role,pageable);
+        }else {
+            return userService.findAllUser(pageable);
+        }
+    }
+
+
+    @GetMapping("/role")
+    @ResponseBody
+    public List<Role> findAllRole(Pageable pageable){
+        return userService.findAllRole(pageable);
     }
 
     @GetMapping("/id={id}")
@@ -31,6 +44,9 @@ public class UserController {
     public User findUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
+
+
+
 
     @PostMapping("")
     @ResponseBody

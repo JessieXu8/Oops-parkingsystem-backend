@@ -6,10 +6,12 @@ import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -26,8 +28,8 @@ public class ParkinglotController {
     }
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParkinglotDto> getAllParkinglots(){
-        List<ParkinglotDto> parkinglotDtos = parkinglotService.getAllParkinglots();
+    public List<ParkinglotDto> getAllParkinglots(Pageable page){
+        List<ParkinglotDto> parkinglotDtos = parkinglotService.getAllParkinglots(page);
         if(parkinglotDtos.size() == 0){
             throw new BadRequestException("no parking lots available");
         }
@@ -57,5 +59,21 @@ public class ParkinglotController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         throw new BadRequestException();
+    }
+
+    @PutMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity park(@PathVariable(value = "id") Long id){
+        if(parkinglotService.park(id)){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        throw new BadRequestException("parked failed");
+    }
+
+    @DeleteMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity unpark(@PathVariable(value = "id") Long id){
+        if(parkinglotService.unpark(id)){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        throw new BadRequestException("unpark failed");
     }
 }

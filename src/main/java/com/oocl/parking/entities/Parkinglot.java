@@ -107,4 +107,16 @@ public class Parkinglot {
     public boolean isFull(){
         return countOfCars>=size;
     }
+
+    public void park(){
+        if(!isFull()){
+            countOfCars++;
+        }
+    }
+
+    public void unpark(){
+        if(!isEmpty()){
+            countOfCars--;
+        }
+    }
 }

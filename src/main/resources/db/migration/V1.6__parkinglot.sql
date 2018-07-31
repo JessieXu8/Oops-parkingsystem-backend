@@ -5,4 +5,4 @@ size int not null ,
 count_of_cars int default 0,
 userId BIGINT default null,
 status varchar(10) default 'open'
-)ENGINE=InnoDB AUTO_INCREMENT=2;
+)

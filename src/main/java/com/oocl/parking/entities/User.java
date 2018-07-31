@@ -16,7 +16,8 @@ public class User {
     private String password;
     private String email;
     private String phone;
-    private String status;
+    private String account_status;
+    private String work_status;
     @JsonIgnore
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "role_id")
@@ -26,6 +27,22 @@ public class User {
 
     public User() {
 
+    }
+
+    public String getAccount_status() {
+        return account_status;
+    }
+
+    public void setAccount_status(String account_status) {
+        this.account_status = account_status;
+    }
+
+    public String getWork_status() {
+        return work_status;
+    }
+
+    public void setWork_status(String work_status) {
+        this.work_status = work_status;
     }
 
     public String getUsername() {
@@ -60,13 +77,7 @@ public class User {
         this.phone = phone;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public Role getRole() {
         return role;
@@ -90,5 +101,16 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public User(String name, String username, String password, String email, String phone, String account_status, String work_status, Role role) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.account_status = account_status;
+        this.work_status = work_status;
+        this.role = role;
     }
 }

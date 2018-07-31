@@ -5,4 +5,7 @@ size int not null ,
 count_of_cars int default (0),
 userId BIGINT default null ,
 status varchar(10) default ('open')
-)
+);
+
+insert into parkinglot values (1, '停车场A', 10, 0, null, 'open');
+insert into parkinglot values (2, '停车场B', 20, 0, null, 'open');

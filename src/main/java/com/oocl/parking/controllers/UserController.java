@@ -26,6 +26,13 @@ public class UserController {
     return userService.findAllUser(pageable);
     }
 
+
+    @GetMapping("/role")
+    @ResponseBody
+    public List<Role> findAllRole(Pageable pageable){
+        return userService.findAllRole(pageable);
+    }
+
     @GetMapping("/id={id}")
     @ResponseBody
     public User findUserById(@PathVariable Long id) {

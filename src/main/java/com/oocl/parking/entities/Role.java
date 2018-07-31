@@ -47,7 +47,5 @@ public class Role {
         this.role = role;
     }
 
-    public Role(String role){
-        this.role=role;
-    }
+    
 }

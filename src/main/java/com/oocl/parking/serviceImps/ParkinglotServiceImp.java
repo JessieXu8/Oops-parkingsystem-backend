@@ -3,7 +3,6 @@ package com.oocl.parking.serviceImps;
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.repositories.ParkinglotRepository;
-import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

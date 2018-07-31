@@ -3,7 +3,6 @@ package com.oocl.parking.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
-import com.oocl.parking.services.ParkinglotService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

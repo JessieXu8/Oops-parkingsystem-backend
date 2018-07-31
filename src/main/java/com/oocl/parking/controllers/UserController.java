@@ -43,11 +43,4 @@ public class UserController {
         userService.updateUserByRole(id,role);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-
-
-
-
-
-
 }

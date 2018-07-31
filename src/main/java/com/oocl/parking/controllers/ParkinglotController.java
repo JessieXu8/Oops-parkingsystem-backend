@@ -6,9 +6,12 @@ import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -24,16 +27,16 @@ public class ParkinglotController {
         this.parkinglotService = parkinglotService;
     }
 
-    @GetMapping("")
-    public List<ParkinglotDto> getAllParkinglots(){
-        List<ParkinglotDto> parkinglotDtos = parkinglotService.getAllParkinglots();
+    @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParkinglotDto> getAllParkinglots(Pageable page){
+        List<ParkinglotDto> parkinglotDtos = parkinglotService.getAllParkinglots(page);
         if(parkinglotDtos.size() == 0){
-            throw new BadRequestException();
+            throw new BadRequestException("no parking lots available");
         }
         return parkinglotDtos;
     }
 
-    @PostMapping("")
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity createParkinglot(@RequestBody Parkinglot parkinglot){
         if(parkinglotService.save(parkinglot)){
             return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -41,7 +44,7 @@ public class ParkinglotController {
         throw new BadRequestException();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ParkinglotDto getById(@PathVariable Long id){
         ParkinglotDto parkinglotDto = parkinglotService.getById(id);
         if(parkinglotDto == null){
@@ -50,11 +53,27 @@ public class ParkinglotController {
         return parkinglotDto;
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity changeStatusById(@PathVariable Long id){
         if(parkinglotService.changeStatusById(id)){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         throw new BadRequestException();
+    }
+
+    @PutMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity park(@PathVariable(value = "id") Long id){
+        if(parkinglotService.park(id)){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        throw new BadRequestException("parked failed");
+    }
+
+    @DeleteMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity unpark(@PathVariable(value = "id") Long id){
+        if(parkinglotService.unpark(id)){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        throw new BadRequestException("unpark failed");
     }
 }

@@ -2,6 +2,7 @@ package com.oocl.parking.services;
 
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
+import com.oocl.parking.repositories.RoleRepository;
 import com.oocl.parking.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
     public List<User> findAllUser(Pageable pageable) {
 
             return userRepository.findAll(pageable).getContent();
@@ -34,5 +37,9 @@ public class UserService {
         User user = userRepository.findById(id).get();
         user.setRole(role);
         userRepository.save(user);
+    }
+
+    public List<Role> findAllRole(Pageable pageable) {
+        return roleRepository.findAll(pageable).getContent();
     }
 }

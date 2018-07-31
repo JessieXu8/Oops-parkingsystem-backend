@@ -21,7 +21,7 @@ public class Parkinglot {
 
     private String status;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
@@ -106,5 +106,17 @@ public class Parkinglot {
     @JsonIgnore
     public boolean isFull(){
         return countOfCars>=size;
+    }
+
+    public void park(){
+        if(!isFull()){
+            countOfCars++;
+        }
+    }
+
+    public void unpark(){
+        if(!isEmpty()){
+            countOfCars--;
+        }
     }
 }

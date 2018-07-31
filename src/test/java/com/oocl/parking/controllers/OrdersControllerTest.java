@@ -41,7 +41,7 @@ public class OrdersControllerTest {
     public void should_return_order_when_call_addOrder()throws Exception {
         Orders orders = new Orders("粤A123456", "存车");
         when(orderService.addOrder(any(Orders.class))).thenReturn(orders);
-        mockMvc.perform(post("/orders").contentType(MediaType.APPLICATION_JSON_VALUE)
+        mockMvc.perform(post("/api/v1/orders").contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(mapper.writeValueAsString(orders)))
                 .andExpect(status().is2xxSuccessful())
                 .andDo(print());
@@ -57,7 +57,7 @@ public class OrdersControllerTest {
         orders.add(order);
         given(orderService.getOrders()).willReturn(orders);
 
-        mockMvc.perform(get("/orders")).andExpect(status().isOk())
+        mockMvc.perform(get("/api/v1/orders")).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].carId").value("粤A123456"))
                 .andExpect(jsonPath("$[0].type").value("存车"));
     }
@@ -74,7 +74,7 @@ public class OrdersControllerTest {
         newOrders.setId(1L);
         given(orderService.updateOrderById(order.getId())).willReturn(newOrders);
 
-        mockMvc.perform(patch("/orders/1")).andExpect(status().isOk())
+        mockMvc.perform(patch("/api/v1/orders/1")).andExpect(status().isOk())
                 .andExpect(jsonPath("carId").value("粤A123456"));
     }
 }

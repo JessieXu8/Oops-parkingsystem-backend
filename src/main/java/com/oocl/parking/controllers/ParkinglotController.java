@@ -38,7 +38,7 @@ public class ParkinglotController {
     @PostMapping("")
     public ResponseEntity createParkinglot(@RequestBody Parkinglot parkinglot){
         if(parkinglotService.save(parkinglot)){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
         throw new BadRequestException();
     }

@@ -1,6 +1,5 @@
 package com.oocl.parking.dto;
 
-import com.oocl.parking.entities.Employee;
 import com.oocl.parking.entities.Parkinglot;
 
 public class ParkinglotDto {
@@ -8,6 +7,7 @@ public class ParkinglotDto {
     private String name;
     private int size;
     private String status;
+    private int countOfCars;
     private Long employeeId;
 
     public ParkinglotDto() {
@@ -18,6 +18,7 @@ public class ParkinglotDto {
         this.name = parkinglot.getName();
         this.size = parkinglot.getSize();
         this.status = parkinglot.getStatus();
+        this.countOfCars = parkinglot.getCountOfCars();
         if(parkinglot.getEmployee() != null)
             this.employeeId = parkinglot.getEmployee().getId();
     }
@@ -40,5 +41,9 @@ public class ParkinglotDto {
 
     public Long getEmployeeId() {
         return employeeId;
+    }
+
+    public int getCountOfCars() {
+        return countOfCars;
     }
 }

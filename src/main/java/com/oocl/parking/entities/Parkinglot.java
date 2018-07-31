@@ -1,6 +1,5 @@
 package com.oocl.parking.entities;
 
-import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 
@@ -15,6 +14,8 @@ public class Parkinglot {
     private String name;
 
     private int size;
+
+    private int countOfCars;
 
     private String status;
 
@@ -85,5 +86,13 @@ public class Parkinglot {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public int getCountOfCars() {
+        return countOfCars;
+    }
+
+    public void setCountOfCars(int countOfCars) {
+        this.countOfCars = countOfCars;
     }
 }

@@ -26,10 +26,10 @@ public class UserController {
     return userService.findAllUser(pageable);
     }
 
-    @GetMapping("/id={param}")
+    @GetMapping("/id={id}")
     @ResponseBody
-    public User findUserById(@PathVariable Long param) {
-        return userService.findUserById(param);
+    public User findUserById(@PathVariable Long id) {
+        return userService.findUserById(id);
     }
 
     @PostMapping("")

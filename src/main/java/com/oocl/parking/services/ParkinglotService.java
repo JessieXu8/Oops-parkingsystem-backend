@@ -9,4 +9,6 @@ public interface ParkinglotService {
     List<ParkinglotDto> getAllParkinglots();
 
     Boolean save(Parkinglot parkinglot);
+
+    ParkinglotDto getById(long id);
 }

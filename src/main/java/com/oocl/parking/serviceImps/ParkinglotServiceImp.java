@@ -33,4 +33,13 @@ public class ParkinglotServiceImp implements ParkinglotService {
         parkinglotRepository.save(parkinglot);
         return true;
     }
+
+    @Override
+    public ParkinglotDto getById(long id) {
+        Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+        if(parkinglot == null){
+            return null;
+        }
+        return new ParkinglotDto(parkinglot);
+    }
 }

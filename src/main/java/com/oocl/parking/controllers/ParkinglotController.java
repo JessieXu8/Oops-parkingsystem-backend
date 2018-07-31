@@ -43,4 +43,13 @@ public class ParkinglotController {
         throw new BadRequestException();
     }
 
+    @GetMapping("/{id}")
+    public ParkinglotDto getById(@PathVariable Long id){
+        ParkinglotDto parkinglotDto = parkinglotService.getById(id);
+        if(parkinglotDto == null){
+            throw new BadRequestException();
+        }
+        return parkinglotDto;
+    }
+
 }

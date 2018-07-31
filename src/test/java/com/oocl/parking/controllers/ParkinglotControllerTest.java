@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -67,5 +68,19 @@ public class ParkinglotControllerTest {
         mockMvc.perform(post("/api/v1/parkinglots").contentType(MediaType.APPLICATION_JSON_VALUE)
                                                         .content(mapper.writeValueAsString(parkinglot)))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void should_get_pakinglot_when_get_by_id() throws Exception{
+    // given
+        Parkinglot parkinglot = new Parkinglot(1L, "lot1", 10, "open");
+        given(parkinglotService.getById(anyLong())).willReturn(new ParkinglotDto(parkinglot));
+    // when
+    // then
+        mockMvc.perform(get("/api/v1/parkinglots/1").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("name", is("lot1")))
+                .andExpect(jsonPath("size", is(10)))
+                .andExpect(jsonPath("status", is("open")))
+                ;
     }
 }

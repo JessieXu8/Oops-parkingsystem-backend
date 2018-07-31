@@ -50,7 +50,7 @@ public class ParkinglotService {
 
     public boolean changeStatusById(Long id) {
         Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
-        if(parkinglot == null){
+        if(parkinglot == null || !parkinglot.isEmpty() || parkinglot.getUser() != null){
             return false;
         }
 

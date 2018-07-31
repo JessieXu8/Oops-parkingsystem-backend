@@ -1,12 +1,18 @@
 package com.oocl.parking.services;
 
+<<<<<<< HEAD
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
 import org.springframework.data.domain.Pageable;
+=======
+
+import com.oocl.parking.entities.User;
+>>>>>>> 98a0b4366c8de7a223e3c5a975f2c704516f4b6c
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+<<<<<<< HEAD
 @Service
 public class UserService {
    
@@ -23,6 +29,14 @@ public class UserService {
     public User addUser(User user) {
         return null;
     }
+
     public void updateUserByRole(Role role) {
     }
+=======
+@Service("userService")
+public class UserService {
+    public List<User> findAllUser(Pageable pageable) {
+        return null;
+    }
+>>>>>>> 98a0b4366c8de7a223e3c5a975f2c704516f4b6c
 }

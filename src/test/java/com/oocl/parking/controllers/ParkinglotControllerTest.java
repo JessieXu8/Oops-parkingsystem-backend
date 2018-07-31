@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -80,5 +81,15 @@ public class ParkinglotControllerTest {
                 ;
     }
 
+    @Test
+    public void should_get_no_content_when_change_status_by_id() throws Exception{
+    // given
+        Parkinglot parkinglot = new Parkinglot(1L, "lot1", 10, "open");
+        given(parkinglotService.changeStatusById(1L)).willReturn(true);
+    // when
+    // then
+        mockMvc.perform(patch("/api/v1/parkinglots/1").contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNoContent());
+    }
 
 }

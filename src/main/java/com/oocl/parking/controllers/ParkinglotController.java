@@ -4,9 +4,7 @@ package com.oocl.parking.controllers;
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.exceptions.BadRequestException;
-import com.oocl.parking.serviceImps.ParkinglotServiceImp;
 import com.oocl.parking.services.ParkinglotService;
-import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,4 +50,11 @@ public class ParkinglotController {
         return parkinglotDto;
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity changeStatusById(@PathVariable Long id){
+        if(parkinglotService.changeStatusById(id)){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        throw new BadRequestException();
+    }
 }

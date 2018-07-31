@@ -26,4 +26,4 @@
 /.nb-gradle/
 
 ### log filse ###
-/logs/
+/logs/*.log

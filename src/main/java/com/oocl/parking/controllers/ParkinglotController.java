@@ -7,6 +7,7 @@ import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -38,8 +40,9 @@ public class ParkinglotController {
     }
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParkinglotDto> getAllParkinglots(Pageable page){
-        List<ParkinglotDto> parkinglotDtos = parkinglotService.getAllParkinglots(page);
+    public List<ParkinglotDto> getAllParkinglots(Pageable page, @RequestParam(required = false, value = "status") Optional<String> status){
+        String state = status.orElse(null);
+        List<ParkinglotDto> parkinglotDtos = parkinglotService.getAllParkinglots(page, state);
         if(parkinglotDtos.size() == 0){
             throw new BadRequestException("no parking lots available");
         }

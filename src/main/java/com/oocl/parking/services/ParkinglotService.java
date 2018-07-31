@@ -25,9 +25,13 @@ public class ParkinglotService {
     }
 
 
-    public List<ParkinglotDto> getAllParkinglots(Pageable page) {
+    public List<ParkinglotDto> getAllParkinglots(Pageable page, String status) {
+        if(status != null)
+            return parkinglotRepository.findByStatus(page, status).stream()
+                    .map(ParkinglotDto::new).collect(Collectors.toList());
+
         return parkinglotRepository.findAll(page)
-            .stream().map(ParkinglotDto::new).collect(Collectors.toList());
+                .stream().map(ParkinglotDto::new).collect(Collectors.toList());
     }
 
 

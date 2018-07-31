@@ -1,6 +1,7 @@
 package com.oocl.parking.serviceImps;
 
 import com.oocl.parking.dto.ParkinglotDto;
+import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,13 @@ public class ParkinglotServiceImp implements ParkinglotService {
     public List<ParkinglotDto> getAllParkinglots() {
         return parkinglotRepository.findAll()
             .stream().map(ParkinglotDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public Boolean save(Parkinglot parkinglot) {
+        if(parkinglotRepository.findById(parkinglot.getId()).orElse(null)!=null)
+            return false;
+        parkinglotRepository.save(parkinglot);
+        return true;
     }
 }

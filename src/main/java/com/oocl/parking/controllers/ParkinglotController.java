@@ -8,10 +8,9 @@ import com.oocl.parking.serviceImps.ParkinglotServiceImp;
 import com.oocl.parking.services.ParkinglotService;
 import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,5 +35,12 @@ public class ParkinglotController {
         return parkinglotDtos;
     }
 
+    @PostMapping("")
+    public ResponseEntity createParkinglot(@RequestBody Parkinglot parkinglot){
+        if(parkinglotService.save(parkinglot)){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        throw new BadRequestException();
+    }
 
 }

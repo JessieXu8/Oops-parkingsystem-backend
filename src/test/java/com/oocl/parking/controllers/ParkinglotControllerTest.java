@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,9 +22,12 @@ import java.util.Collections;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ParkinglotController.class)
@@ -51,7 +55,17 @@ public class ParkinglotControllerTest {
                 .andExpect(jsonPath("$[0].size", is(10)))
                 .andExpect(jsonPath("$[0].status", is("open")))
         ;
+    }
 
-
+    @Test
+    public void should_return_no_content_when_post_parkinglot() throws Exception{
+    // given
+        Parkinglot parkinglot = new Parkinglot("lot1", 10, "opem");
+        given(parkinglotService.save(any(Parkinglot.class))).willReturn(true);
+    // when
+    // then
+        mockMvc.perform(post("/api/v1/parkinglots").contentType(MediaType.APPLICATION_JSON_VALUE)
+                                                        .content(mapper.writeValueAsString(parkinglot)))
+                .andExpect(status().isNoContent());
     }
 }

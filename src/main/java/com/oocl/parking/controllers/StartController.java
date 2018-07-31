@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin
+
+@CrossOrigin(origins = "http://10.222.232.140:3000")
 @RestController
 @RequestMapping("/start")
 public class StartController {
@@ -25,7 +26,7 @@ public class StartController {
     public String getHello(){
         return "hello world";
     }
-    //@CrossOrigin(origins = "http://172.30.224.1:3000")
+    //@CrossOrigin(origins = "http://10.222.232.140:3000")
     @GetMapping("")
     public List<Start> getStart(){
         List<Start> start = startRepository.findAll();

@@ -26,6 +26,12 @@ public class Parkinglot {
     public Parkinglot() {
     }
 
+    public Parkinglot(String name, int size, String status) {
+        this.name = name;
+        this.size = size;
+        this.status = status;
+    }
+
     public Parkinglot(String name, int size, String status, Employee employee) {
         this.name = name;
         this.size = size;

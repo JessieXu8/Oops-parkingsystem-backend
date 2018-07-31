@@ -27,7 +27,7 @@ public class ParkinglotService {
 
 
     public Boolean save(Parkinglot parkinglot) {
-        if(parkinglotRepository.findById(parkinglot.getId()).orElse(null)!=null)
+        if(parkinglot.getId() != null)
             return false;
         parkinglotRepository.save(parkinglot);
         return true;

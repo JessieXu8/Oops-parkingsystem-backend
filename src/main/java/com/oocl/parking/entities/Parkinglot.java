@@ -21,7 +21,7 @@ public class Parkinglot {
 
     private String status;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 

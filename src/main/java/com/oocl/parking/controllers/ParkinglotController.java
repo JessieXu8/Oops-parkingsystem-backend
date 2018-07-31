@@ -7,6 +7,7 @@ import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,15 @@ public class ParkinglotController {
     @Autowired
     public ParkinglotController(ParkinglotService parkinglotService){
         this.parkinglotService = parkinglotService;
+    }
+
+    @GetMapping(path = "/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParkinglotDto> getDashboard(@PageableDefault(size = 6) Pageable page){
+        List<ParkinglotDto> parkinglotDtos = parkinglotService.getDashboard(page, "open");
+        if(parkinglotDtos.size() == 0){
+            throw new BadRequestException("no parking lots available");
+        }
+        return parkinglotDtos;
     }
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)

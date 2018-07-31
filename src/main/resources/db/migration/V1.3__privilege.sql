@@ -7,6 +7,6 @@ CREATE TABLE `privilege` (
 -- ----------------------------
 -- Records of privilege
 -- ----------------------------
-INSERT INTO `privilege` VALUES ('1', 'user');
-INSERT INTO `privilege` VALUES ('2', 'parkinglot');
-INSERT INTO `privilege` VALUES ('3', 'order');
+INSERT INTO `privilege` VALUES (1, 'user');
+INSERT INTO `privilege` VALUES (2, 'parkinglot');
+INSERT INTO `privilege` VALUES (3, 'order');

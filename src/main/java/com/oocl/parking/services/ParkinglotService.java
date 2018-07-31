@@ -4,6 +4,7 @@ import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +21,8 @@ public class ParkinglotService {
     }
 
 
-    public List<ParkinglotDto> getAllParkinglots() {
-        return parkinglotRepository.findAll()
+    public List<ParkinglotDto> getAllParkinglots(Pageable page) {
+        return parkinglotRepository.findAll(page)
             .stream().map(ParkinglotDto::new).collect(Collectors.toList());
     }
 

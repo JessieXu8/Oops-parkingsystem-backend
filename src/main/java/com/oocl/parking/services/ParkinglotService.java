@@ -11,4 +11,6 @@ public interface ParkinglotService {
     Boolean save(Parkinglot parkinglot);
 
     ParkinglotDto getById(long id);
+
+    boolean changeStatusById(Long id);
 }

@@ -1,4 +1,4 @@
-package com.oocl.parking.serviceImps;
+package com.oocl.parking.servicesImpl;
 
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
@@ -41,5 +41,21 @@ public class ParkinglotServiceImp implements ParkinglotService {
             return null;
         }
         return new ParkinglotDto(parkinglot);
+    }
+
+    @Override
+    public boolean changeStatusById(Long id) {
+        Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+        if(parkinglot == null){
+            return false;
+        }
+
+        if(parkinglot.getStatus().equals("open")) {
+            parkinglot.setStatus("logout");
+        }else{
+            parkinglot.setStatus("open");
+        }
+        parkinglotRepository.save(parkinglot);
+        return true;
     }
 }

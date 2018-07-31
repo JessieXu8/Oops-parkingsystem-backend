@@ -19,7 +19,7 @@ public class Parkinglot {
 
     private int countOfCars;
 
-    private String status;
+    private String status = "open";
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")

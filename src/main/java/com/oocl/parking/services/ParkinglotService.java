@@ -78,4 +78,12 @@ public class ParkinglotService {
         parkinglotRepository.save(parkinglot);
         return true;
     }
+
+    public List<ParkinglotDto> getDashboard(Pageable page, String status) {
+        List<ParkinglotDto> parkinglotDtos =
+        parkinglotRepository.findByStatus(page, status).stream()
+                //.filter(parkinglot -> parkinglot.getUser()!=null)
+                .map(ParkinglotDto::new).collect(Collectors.toList());
+        return parkinglotDtos;
+    }
 }

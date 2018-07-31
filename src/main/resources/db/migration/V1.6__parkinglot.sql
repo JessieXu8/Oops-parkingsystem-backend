@@ -4,5 +4,5 @@ name varchar (20) not null,
 size int not null ,
 count_of_cars int default 0,
 userId BIGINT default null,
-status varchar(10) default 'open'
+status varchar(10) default ('open')
 )

@@ -1,5 +1,6 @@
 package com.oocl.parking.services;
 
+import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
@@ -85,10 +86,21 @@ public class UserService {
           return privileges;
     }
 
-    public void updateUserStatus(Long id) {
+    public UserDto updateUser(Long id,User newUser) {
         User user = userRepository.getOne(id);
-        String status = user.getAccount_status().equals("normal")?"abnormal":"normal";
-        user.setAccount_status(status);
+        if (newUser.getAccount_status() != null) {
+            String status = user.getAccount_status().equals("normal") ? "abnormal" : "normal";
+            user.setAccount_status(status);
+        } else {
+            user.setUsername(newUser.getUsername());
+            user.setEmail(newUser.getEmail());
+            user.setName(newUser.getName());
+            user.setPhone(newUser.getPhone());
+            user.setPassword(newUser.getPassword());
+
+        }
+        UserDto userDto = new UserDto(user);
         userRepository.save(user);
+        return userDto;
     }
 }

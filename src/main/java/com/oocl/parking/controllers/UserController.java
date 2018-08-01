@@ -1,5 +1,6 @@
 package com.oocl.parking.controllers;
 
+import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
@@ -54,9 +55,10 @@ public class UserController {
 
     @PatchMapping("/{id}")
     @ResponseBody
-    public ResponseEntity updateUserStatus(@PathVariable Long id){
-        userService.updateUserStatus(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public UserDto updateUser(@PathVariable Long id, @RequestBody User user){
+
+        return userService.updateUser(id,user);
+
     }
     @PostMapping("")
     @ResponseBody

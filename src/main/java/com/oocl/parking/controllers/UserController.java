@@ -45,14 +45,19 @@ public class UserController {
     public User findUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
-    @GetMapping("/authorities/{id}")
+    @GetMapping("/{id}/authorities")
     @ResponseBody
     public List<Privilege> getAllAuthorities(@PathVariable Long id){
+
         return userService.findAllAuthorities(id);
     }
 
-
-
+    @PatchMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity updateUserStatus(@PathVariable Long id){
+        userService.updateUserStatus(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
     @PostMapping("")
     @ResponseBody
     public  User addUser(@RequestBody User user){

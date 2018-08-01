@@ -3,8 +3,10 @@ package com.oocl.parking.services;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
+import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.repositories.RoleRepository;
 import com.oocl.parking.repositories.UserRepository;
+import com.oocl.parking.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -20,6 +22,7 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+    private  UserUtil userUtil = new UserUtil();
     public List<User> findAllUser(Pageable pageable) {
 
             return userRepository.findAll(pageable).getContent();
@@ -33,11 +36,21 @@ public class UserService {
 
     
     public User addUser(User user) {
+        String password =  userUtil.getRandomPassword();
+        user.setPassword(password);
+        user.setAccount_status("normal");
         return userRepository.save(user);
     }
     public void updateUserByRole(Long id,Role role) {
         User user = userRepository.findById(id).get();
-        user.setRole(role);
+        List<Role> roleList = roleRepository.findByRole(role.getRole());
+        if(roleList!=null&&roleList.size()!=0){
+            user.setRole(roleList.get(0));
+        }
+        else
+        {
+            throw new BadRequestException("no role match!");
+        }
         userRepository.save(user);
     }
 
@@ -52,7 +65,10 @@ public class UserService {
         if(roleList!=null&&roleList.size()!=0){
             userRole.setId(roleList.get(0).getId());
         }
-
+        else
+        {
+            throw new BadRequestException("no role match!");
+        }
         User user = new User();
         user.setRole(userRole);
 
@@ -67,5 +83,12 @@ public class UserService {
           Role role = roleRepository.getOne(user.getRole().getId());
           List<Privilege> privileges = role.getPrivileges();
           return privileges;
+    }
+
+    public void updateUserStatus(Long id) {
+        User user = userRepository.getOne(id);
+        String status = user.getAccount_status().equals("normal")?"abnormal":"normal";
+        user.setAccount_status(status);
+        userRepository.save(user);
     }
 }

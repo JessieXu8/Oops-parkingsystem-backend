@@ -93,4 +93,14 @@ public class ParkinglotService {
                 .map(ParkinglotDto::new).collect(Collectors.toList());
         return parkinglotDtos;
     }
+
+    public ParkinglotDto changeNameById(Long id, String name, int size) {
+        Parkinglot parkinglot =parkinglotRepository.findById(id).orElse(null);
+        if(parkinglot == null || parkinglot.getSize() > size){
+            return null;
+        }
+        parkinglotRepository.changeNameAndSizeById(id, size, name);
+        parkinglot = parkinglotRepository.findById(id).orElse(null);
+        return new ParkinglotDto(parkinglot);
+    }
 }

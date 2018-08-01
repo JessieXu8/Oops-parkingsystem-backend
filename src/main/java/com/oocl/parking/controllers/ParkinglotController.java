@@ -79,6 +79,16 @@ public class ParkinglotController {
         throw new BadRequestException();
     }
 
+    @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ParkinglotDto modifyById(@PathVariable Long id, @RequestBody Parkinglot parkinglot){
+        ParkinglotDto parkinglotDto =
+            parkinglotService.changeNameById(id, parkinglot.getName(), parkinglot.getSize());
+        if(parkinglotDto != null) {
+            return parkinglotDto;
+        }
+        throw new BadRequestException("modify failed");
+    }
+
     @PutMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity park(@PathVariable(value = "id") Long id){
         if(parkinglotService.park(id)){

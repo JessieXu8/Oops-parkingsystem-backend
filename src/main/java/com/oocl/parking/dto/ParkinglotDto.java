@@ -9,6 +9,7 @@ public class ParkinglotDto {
     private String status;
     private int countOfCars;
     private Long userId;
+    private String userName;
 
     public ParkinglotDto() {
     }
@@ -20,7 +21,14 @@ public class ParkinglotDto {
         this.status = parkinglot.getStatus();
         this.countOfCars = parkinglot.getCountOfCars();
         if(parkinglot.getUser() != null)
+        {
             this.userId = parkinglot.getUser().getId();
+            this.userName = parkinglot.getUser().getName();
+        }
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public Long getId() {

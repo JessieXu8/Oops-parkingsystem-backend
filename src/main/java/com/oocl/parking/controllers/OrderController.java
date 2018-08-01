@@ -1,10 +1,8 @@
 package com.oocl.parking.controllers;
 
-import com.oocl.parking.entities.Order;
+import com.oocl.parking.entities.Orders;
 import com.oocl.parking.services.OrderService;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,27 +11,26 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/orders")
 public class OrderController {
     @Autowired
     private OrderService orderService;
 
     @Transactional
-    @PostMapping(path = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order addOrder(@RequestBody Order order){
-        System.out.println(order.toString());
-        return orderService.addOrder(order);
+    @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Orders addOrder(@RequestBody Orders orders){
+        return orderService.addOrder(orders);
     }
 
     @Transactional
-    @GetMapping(path = "/orders",produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Order> getOrders(){
+    @GetMapping(path = "",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Orders> getOrders(){
         return orderService.getOrders();
     }
 
     @Transactional
-    @PatchMapping(path = "/orders/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order updateOrderById(@PathVariable Long id){
+    @PatchMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Orders updateOrderById(@PathVariable Long id){
         return orderService.updateOrderById(id);
     }
 

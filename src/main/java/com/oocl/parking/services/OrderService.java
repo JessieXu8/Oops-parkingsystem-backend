@@ -1,6 +1,6 @@
 package com.oocl.parking.services;
 
-import com.oocl.parking.entities.Order;
+import com.oocl.parking.entities.Orders;
 import com.oocl.parking.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,24 +12,23 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order addOrder(Order order) {
-        order.setStatus("无人处理");
-//        System.out.println(order.getCarId());
-        if (order.getType().equals("存车")){
-            order.setOperation("指派");
+    public Orders addOrder(Orders orders) {
+        orders.setStatus("无人处理");
+        if (orders.getType().equals("存车")){
+            orders.setOperation("指派");
         }
-        orderRepository.save(order);
-        return order;
+        orderRepository.save(orders);
+        return orders;
     }
 
-    public List<Order> getOrders() {
+    public List<Orders> getOrders() {
         return orderRepository.findAll();
     }
 
-    public Order updateOrderById(Long id) {
-        Order order = orderRepository.findById(id).get();
-        order.setStatus("停取中");
-        order.setOperation(null);
-        return order;
+    public Orders updateOrderById(Long id) {
+        Orders orders = orderRepository.findById(id).get();
+        orders.setStatus("停取中");
+        orders.setOperation(null);
+        return orders;
     }
 }

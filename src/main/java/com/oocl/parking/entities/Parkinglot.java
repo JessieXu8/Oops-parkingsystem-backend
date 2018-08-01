@@ -1,6 +1,8 @@
 package com.oocl.parking.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Table(name = "parkinglot")
@@ -17,9 +19,9 @@ public class Parkinglot {
 
     private int countOfCars;
 
-    private String status;
+    private String status = "open";
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private User user;
 
@@ -27,6 +29,9 @@ public class Parkinglot {
     public Parkinglot() {
     }
 
+    public Parkinglot(Long id) {
+        this.id = id;
+    }
 
     public Parkinglot(String name, int size, String status) {
         this.name = name;
@@ -94,5 +99,27 @@ public class Parkinglot {
 
     public void setCountOfCars(int countOfCars) {
         this.countOfCars = countOfCars;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty(){
+        return countOfCars==0;
+    }
+
+    @JsonIgnore
+    public boolean isFull(){
+        return countOfCars>=size;
+    }
+
+    public void park(){
+        if(!isFull()){
+            countOfCars++;
+        }
+    }
+
+    public void unpark(){
+        if(!isEmpty()){
+            countOfCars--;
+        }
     }
 }

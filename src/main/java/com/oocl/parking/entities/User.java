@@ -18,8 +18,7 @@ public class User {
     private String phone;
     private String account_status;
     private String work_status;
-    @JsonIgnore
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
 
@@ -27,6 +26,14 @@ public class User {
 
     public User() {
 
+    }
+
+    public User(Long id){
+        this.id = id;
+    }
+
+    public User(String name) {
+        this.name = name;
     }
 
     public String getAccount_status() {

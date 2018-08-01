@@ -25,6 +25,7 @@
 /nbdist/
 /.nb-gradle/
 
-
-#####
-/log
+### log filse ###
+/logs
+*.log
+api-stack-base.log

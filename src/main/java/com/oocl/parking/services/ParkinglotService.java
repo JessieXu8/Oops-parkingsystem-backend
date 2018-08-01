@@ -32,11 +32,11 @@ public class ParkinglotService {
     }
 
 
-    public Boolean save(Parkinglot parkinglot) {
+    public ParkinglotDto save(Parkinglot parkinglot) {
         if(parkinglot.getId() != null)
-            return false;
+            return null;
         parkinglotRepository.save(parkinglot);
-        return true;
+        return new ParkinglotDto(parkinglot);
     }
 
 

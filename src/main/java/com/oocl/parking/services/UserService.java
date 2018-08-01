@@ -1,5 +1,6 @@
 package com.oocl.parking.services;
 
+import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
 import com.oocl.parking.repositories.RoleRepository;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -60,5 +60,12 @@ public class UserService {
 
         Example<User> ex = Example.of(user, matcher);
       return userRepository.findAll(ex,pageable).getContent();
+    }
+
+    public List<Privilege> findAllAuthorities(Long id) {
+          User user = userRepository.getOne(id);
+          Role role = roleRepository.getOne(user.getRole().getId());
+          List<Privilege> privileges = role.getPrivileges();
+          return privileges;
     }
 }

@@ -23,6 +23,15 @@ public interface ParkinglotRepository extends JpaRepository<Parkinglot, Long> {
     List<Parkinglot> findByStatus(String status);
     List<Parkinglot> findByStatusAndUserNotNull(Pageable page, String status);
 
+    List<Parkinglot> findAllByUserNull(Pageable page);
+
+//    @Modifying(clearAutomatically = true)
+//    @Transactional
+//    @Query("select Parkinglot as p from parkinglot where p.size > :min and p.size < :max order by p.id")
+//    List<Parkinglot> findBetween(int min, int max);
+
+    List<Parkinglot> findAllBySizeGreaterThan(int min);
+
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("update Parkinglot as p set p.status = :status where p.id = :id ")

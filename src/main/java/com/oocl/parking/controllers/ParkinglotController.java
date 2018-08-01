@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 @CrossOrigin
 @RestController
@@ -53,15 +54,26 @@ public class ParkinglotController {
         return parkinglotDtos;
     }
 
+    @GetMapping(path = "/noUser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParkinglotDto> getNoUserParkinglots(
+            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC)Pageable page
+            ){
+        return parkinglotService.getNoUserParkinglots(page);
+    }
+
     @GetMapping(path = "/combineSearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParkinglotDto> getParkinglots(
-            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC)Pageable page,
-            @PathVariable(required = false, value = "name") Optional<String> _name,
-            @PathVariable(required = false, value = "tel") Optional<String> _tel,
-            @PathVariable(required = false, value = "sizeBt") Optional<Integer> _bt,
-            @PathVariable(required = false, value = "sizeSt") Optional<Integer> _st
+            @RequestParam(required = false) Optional<String> name,
+            @RequestParam(required = false) Optional<String> tel,
+            @RequestParam(required = false) Optional<Integer> sizeBt,
+            @RequestParam(required = false) Optional<Integer> sizeSt
             ){
-        return null;
+        String _name = name.orElse(null);
+        String _tel = tel.orElse(null);
+        int bt = sizeBt.orElse(0);
+        int st = sizeSt.orElse(Integer.MAX_VALUE);
+
+        return parkinglotService.getPakinglotsCombineSearch(_name, _tel, bt, st);
 
     }
 

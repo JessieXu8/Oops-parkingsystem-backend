@@ -8,7 +8,6 @@ import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.exceptions.UserInfoException;
-import com.oocl.parking.repositories.ParkinglotRepository;
 import com.oocl.parking.repositories.RoleRepository;
 import com.oocl.parking.repositories.UserRepository;
 import com.oocl.parking.util.UserUtil;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -111,30 +109,6 @@ public class UserService {
         }
         UserDto userDto = new UserDto(user);
         userRepository.save(user);
-        return userDto;
-    }
-
-    public List<ParkinglotDto> getParkinglots(Long id) {
-        User user = userRepository.findById(id).orElse(null);
-        if(user == null || !user.getRole().getRole().equals("parkingboy")){
-            return null;
-        }
-        return user.getParkinglots().stream().map(ParkinglotDto::new).collect(Collectors.toList());
-    }
-
-    public boolean setParkinglotToUser(Long userId, Long lotId) {
-        User user = userRepository.findById(userId).orElse(null);
-        Parkinglot parkinglot = parkinglotRepository.findById(lotId).orElse(null);
-        if(user == null || parkinglot == null || !user.getRole().getRole().equals("parkingboy")){
-            return false;
-        }
-
-        parkinglot.setUser(user);
-        user.addParkinglot(parkinglot);
-
-        parkinglotRepository.save(parkinglot);
-        userRepository.save(user);
-        return true;
     }
     public User validateUser(User user) {
         List<User> userList = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
@@ -148,6 +122,17 @@ public class UserService {
     public  Optional<User> findUserName(String username) {
         return userRepository.findByUsername(username);
 
+        Parkinglot parkinglot = parkinglotRepository.findById(lotId).orElse(null);
+        if(user == null || parkinglot == null || !user.getRole().getRole().equals("parkingboy")){
+            return false;
+        }
+
+        parkinglot.setUser(user);
+        user.addParkinglot(parkinglot);
+
+        parkinglotRepository.save(parkinglot);
+        userRepository.save(user);
+        return true;
     }
 
     public List<User> selectByParam(String name,String email,String phone,Long id) {

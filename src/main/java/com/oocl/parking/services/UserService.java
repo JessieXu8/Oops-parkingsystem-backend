@@ -1,10 +1,13 @@
 package com.oocl.parking.services;
 
 import com.oocl.parking.dto.UserDto;
+import com.oocl.parking.dto.ParkinglotDto;
+import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
 import com.oocl.parking.exceptions.BadRequestException;
+import com.oocl.parking.repositories.ParkinglotRepository;
 import com.oocl.parking.repositories.RoleRepository;
 import com.oocl.parking.repositories.UserRepository;
 import com.oocl.parking.util.UserUtil;
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -23,6 +27,10 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private ParkinglotRepository parkinglotRepository;
+
     private  UserUtil userUtil = new UserUtil();
     public List<User> findAllUser(Pageable pageable) {
 
@@ -102,5 +110,28 @@ public class UserService {
         UserDto userDto = new UserDto(user);
         userRepository.save(user);
         return userDto;
+    }
+
+    public List<ParkinglotDto> getParkinglots(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null || !user.getRole().getRole().equals("parkingboy")){
+            return null;
+        }
+        return user.getParkinglots().stream().map(ParkinglotDto::new).collect(Collectors.toList());
+    }
+
+    public boolean setParkinglotToUser(Long userId, Long lotId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Parkinglot parkinglot = parkinglotRepository.findById(lotId).orElse(null);
+        if(user == null || parkinglot == null || !user.getRole().getRole().equals("parkingboy")){
+            return false;
+        }
+
+        parkinglot.setUser(user);
+        user.addParkinglot(parkinglot);
+
+        parkinglotRepository.save(parkinglot);
+        userRepository.save(user);
+        return true;
     }
 }

@@ -1,9 +1,12 @@
 package com.oocl.parking.controllers;
 
+import com.oocl.parking.dto.ParkinglotDto;
+import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
+import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -71,5 +74,25 @@ public class UserController {
     public ResponseEntity updateUserByRole(@PathVariable Long id,@RequestBody Role role){
         userService.updateUserByRole(id,role);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{id}/parkinglots")
+    @ResponseBody
+    public List<ParkinglotDto> getParkinglotsByUsers(@PathVariable Long id){
+        List<ParkinglotDto> parkinglotDtos = userService.getParkinglots(id);
+        if(parkinglotDtos == null){
+            throw new BadRequestException("no parkinglots");
+        }
+        return parkinglotDtos;
+    }
+
+    @PatchMapping("/{userId}/parkinglots/{lotId}")
+    @ResponseBody
+    public ResponseEntity setParkinglotToUser(@PathVariable Long userId, @PathVariable Long lotId){
+        if(userService.setParkinglotToUser(userId, lotId)){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        throw new BadRequestException();
+
     }
 }

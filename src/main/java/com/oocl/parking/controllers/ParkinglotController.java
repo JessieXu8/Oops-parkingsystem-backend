@@ -53,6 +53,18 @@ public class ParkinglotController {
         return parkinglotDtos;
     }
 
+    @GetMapping(path = "/combineSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<ParkinglotDto> getParkinglots(
+            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC)Pageable page,
+            @PathVariable(required = false, value = "name") Optional<String> _name,
+            @PathVariable(required = false, value = "tel") Optional<String> _tel,
+            @PathVariable(required = false, value = "sizeBt") Optional<Integer> _bt,
+            @PathVariable(required = false, value = "sizeSt") Optional<Integer> _st
+            ){
+        return null;
+
+    }
+
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ParkinglotDto createParkinglot(@RequestBody Parkinglot parkinglot){
         ParkinglotDto parkinglotDto = parkinglotService.save(parkinglot);

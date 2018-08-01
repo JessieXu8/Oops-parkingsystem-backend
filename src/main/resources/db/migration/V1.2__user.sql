@@ -7,7 +7,7 @@ CREATE TABLE `user` (
   `phone` varchar(11) NOT NULL,
   `work_status` varchar(20) DEFAULT NULL,
   `account_status` varchar(20) NOT NULL,
-  `role_id` bigint(20) ,
+  `role_id` bigint(20),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 

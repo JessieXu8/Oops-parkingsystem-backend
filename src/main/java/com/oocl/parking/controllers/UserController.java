@@ -1,5 +1,6 @@
 package com.oocl.parking.controllers;
 
+import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
 import com.oocl.parking.services.UserService;
@@ -44,7 +45,11 @@ public class UserController {
     public User findUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
-
+    @GetMapping("/authorities/{id}")
+    @ResponseBody
+    public List<Privilege> getAllAuthorities(@PathVariable Long id){
+        return userService.findAllAuthorities(id);
+    }
 
 
 

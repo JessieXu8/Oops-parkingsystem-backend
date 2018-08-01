@@ -63,12 +63,12 @@ public class ParkinglotControllerTest {
     public void should_return_is_created_when_post_parkinglot() throws Exception{
     // given
         Parkinglot parkinglot = new Parkinglot("lot1", 10, "opem");
-        given(parkinglotService.save(any(Parkinglot.class))).willReturn(true);
+        given(parkinglotService.save(any(Parkinglot.class))).willReturn(new ParkinglotDto(parkinglot));
     // when
     // then
         mockMvc.perform(post("/api/v1/parkinglots").contentType(MediaType.APPLICATION_JSON_VALUE)
                                                         .content(mapper.writeValueAsString(parkinglot)))
-                .andExpect(status().isCreated());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test

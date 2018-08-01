@@ -54,9 +54,10 @@ public class ParkinglotController {
     }
 
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createParkinglot(@RequestBody Parkinglot parkinglot){
-        if(parkinglotService.save(parkinglot)){
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ParkinglotDto createParkinglot(@RequestBody Parkinglot parkinglot){
+        ParkinglotDto parkinglotDto = parkinglotService.save(parkinglot);
+        if(parkinglotDto != null){
+            return parkinglotDto;
         }
         throw new BadRequestException();
     }

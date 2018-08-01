@@ -39,7 +39,7 @@ public class LoginController {
         //如果认证对象不为空
         if (Objects.nonNull(authenticationToken)){
             userRepository.findByUsername(authenticationToken.getPrincipal().toString())
-                    .orElseThrow(()->new Exception("用户不存在"));
+                    .orElseThrow(()->new BadCredentialsException("用户不存在"));
         }
         try {
             //通过 AuthenticationManager（默认实现为ProviderManager）的authenticate方法验证 Authentication 对象

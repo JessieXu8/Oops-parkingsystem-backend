@@ -11,14 +11,17 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.List;
 
+@CrossOrigin
 @RestController
+@RequestMapping("/api/v1")
 public class OrderController {
     @Autowired
     private OrderService orderService;
 
     @Transactional
     @PostMapping(path = "/orders", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Order addOrder(Order order){
+    public Order addOrder(@RequestBody Order order){
+        System.out.println(order.toString());
         return orderService.addOrder(order);
     }
 

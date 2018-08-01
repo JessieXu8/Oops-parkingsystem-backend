@@ -14,6 +14,7 @@ public class OrderService {
 
     public Order addOrder(Order order) {
         order.setStatus("无人处理");
+//        System.out.println(order.getCarId());
         if (order.getType().equals("存车")){
             order.setOperation("指派");
         }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -93,5 +94,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
         throw new BadRequestException();
+    }
+    @GetMapping("/search")
+    public List<User> selectByParam(@RequestParam(required = false) Optional<String> name,
+                                    @RequestParam(required = false) Optional<String> email,
+                                    @RequestParam(required = false) Optional<String> phone,
+                                    @RequestParam(required = false) Optional<Long> id){
+        System.out.println(name.orElse(null));
+        return userService.selectByParam(name.orElse(null),email.orElse(null),phone.orElse(null),id.orElse(null));
+
     }
 }

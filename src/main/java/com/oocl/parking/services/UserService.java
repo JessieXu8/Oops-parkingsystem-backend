@@ -149,4 +149,8 @@ public class UserService {
         return userRepository.findByUsername(username);
 
     }
+
+    public List<User> selectByParam(String name,String email,String phone,Long id) {
+        return userRepository.findByNameLikeOrEmailLikeOrPhoneLikeOrId("%"+name+"%","%"+email+"%","%"+phone+"%",id);
+    }
 }

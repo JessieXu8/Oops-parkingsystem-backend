@@ -18,7 +18,7 @@ public class OrderController {
 
     @Transactional
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Orders addOrder(Orders orders){
+    public Orders addOrder(@RequestBody Orders orders){
         return orderService.addOrder(orders);
     }
 

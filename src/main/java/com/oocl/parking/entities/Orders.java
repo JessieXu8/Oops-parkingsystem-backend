@@ -2,7 +2,7 @@ package com.oocl.parking.entities;
 
 import javax.persistence.*;
 
-@Table(name = "order")
+@Table(name = "orders")
 @Entity
 public class Orders {
     @Id

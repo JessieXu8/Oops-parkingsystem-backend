@@ -27,4 +27,9 @@ public interface ParkinglotRepository extends JpaRepository<Parkinglot, Long> {
     @Transactional
     @Query("update Parkinglot as p set p.status = :status where p.id = :id ")
     int changeStatus(@Param("id") Long id, @Param("status") String status);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("update Parkinglot as p set p.name = :name, p.size = :size where p.id = :id")
+    int changeNameAndSizeById(@Param("id") Long id, @Param("size") int size, @Param("name") String name);
 }

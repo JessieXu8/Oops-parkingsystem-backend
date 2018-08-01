@@ -48,6 +48,7 @@ public class UserController {
     public User findUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
+
     @GetMapping("/{id}/authorities")
     @ResponseBody
     public List<Privilege> getAllAuthorities(@PathVariable Long id){

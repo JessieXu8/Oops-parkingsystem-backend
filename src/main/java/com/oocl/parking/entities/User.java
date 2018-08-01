@@ -18,7 +18,6 @@ public class User {
     private String phone;
     private String account_status;
     private String work_status;
-    @JsonIgnore
     @ManyToOne(fetch= FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;

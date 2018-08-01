@@ -51,6 +51,7 @@ public class UserController {
     @PostMapping("")
     @ResponseBody
     public  User addUser(@RequestBody User user){
+        System.out.println(user.getRole());
         return userService.addUser(user);
     }
     @PatchMapping("/id={id}")

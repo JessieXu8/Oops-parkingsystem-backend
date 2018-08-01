@@ -2,13 +2,10 @@ package com.oocl.parking.services;
 
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
-import com.oocl.parking.entities.User;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,13 +54,15 @@ public class ParkinglotService {
         if(parkinglot == null || !parkinglot.isEmpty() || parkinglot.getUser() != null){
             return false;
         }
-
+        String status = "";
         if(parkinglot.getStatus().equals("open")) {
-            parkinglot.setStatus("logout");
+            status = "logout";
+//            parkinglot.setStatus("logout");
         }else{
-            parkinglot.setStatus("open");
+            status = "open";
+//            parkinglot.setStatus("open");
         }
-        parkinglotRepository.save(parkinglot);
+        parkinglotRepository.changeStatus(id, status);//save(parkinglot);
         return true;
     }
 
@@ -88,14 +87,9 @@ public class ParkinglotService {
     }
 
     public List<ParkinglotDto> getDashboard(Pageable page, String status) {
-//        Parkinglot parkinglot = new Parkinglot();
-//        parkinglot.setStatus(status);
-//        parkinglot.setUser(null);
-//        ExampleMatcher matcher = ExampleMatcher.matching();
-//        Example<Parkinglot> ex = Example.of(parkinglot, matcher);
+
         List<ParkinglotDto> parkinglotDtos =
         parkinglotRepository.findByStatusAndUserNotNull(page, status).stream()
-                //.filter(parkinglot -> parkinglot.getUser()!=null)
                 .map(ParkinglotDto::new).collect(Collectors.toList());
         return parkinglotDtos;
     }

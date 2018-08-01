@@ -7,6 +7,7 @@ import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.ParkinglotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,8 @@ public class ParkinglotController {
     }
 
     @GetMapping(path = "/dashboard", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParkinglotDto> getDashboard(@PageableDefault(size = 6) Pageable page){
+    public List<ParkinglotDto> getDashboard(
+            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC) Pageable page){
         List<ParkinglotDto> parkinglotDtos = parkinglotService.getDashboard(page, "open");
         if(parkinglotDtos.size() == 0){
             throw new BadRequestException("no parking lots available");
@@ -40,7 +42,9 @@ public class ParkinglotController {
     }
 
     @GetMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ParkinglotDto> getAllParkinglots(Pageable page, @RequestParam(required = false, value = "status") Optional<String> status){
+    public List<ParkinglotDto> getAllParkinglots(
+            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC)Pageable page,
+            @RequestParam(required = false, value = "status") Optional<String> status){
         String state = status.orElse(null);
         List<ParkinglotDto> parkinglotDtos = parkinglotService.getAllParkinglots(page, state);
         if(parkinglotDtos.size() == 0){

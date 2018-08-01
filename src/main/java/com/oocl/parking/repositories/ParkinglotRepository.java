@@ -5,6 +5,7 @@ import com.oocl.parking.entities.Parkinglot;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -21,4 +22,9 @@ public interface ParkinglotRepository extends JpaRepository<Parkinglot, Long> {
 
     List<Parkinglot> findByStatus(String status);
     List<Parkinglot> findByStatusAndUserNotNull(Pageable page, String status);
+
+    @Modifying(clearAutomatically = true)
+    @Transactional
+    @Query("update Parkinglot as p set p.status = :status where p.id = :id ")
+    int changeStatus(@Param("id") Long id, @Param("status") String status);
 }

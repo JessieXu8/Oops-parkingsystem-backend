@@ -48,10 +48,10 @@ public class ParkinglotControllerTest {
     public void should_get_parkinglot_dto_list_when_get_parkinglots() throws Exception {
     // given
         Parkinglot parkinglot = new Parkinglot("test1", 10, "open");
-        given(parkinglotService.getAllParkinglots(any(Pageable.class))).willReturn(Arrays.asList(new ParkinglotDto(parkinglot)));
+        given(parkinglotService.getAllParkinglots(any(Pageable.class), any(String.class))).willReturn(Arrays.asList(new ParkinglotDto(parkinglot)));
     // when
     // then
-        mockMvc.perform(get("/api/v1/parkinglots?page=0&size=1").contentType(MediaType.APPLICATION_JSON_VALUE))
+        mockMvc.perform(get("/api/v1/parkinglots?page=0&size=1&status=open").contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].name", is("test1")))
                 .andExpect(jsonPath("$[0].size", is(10)))

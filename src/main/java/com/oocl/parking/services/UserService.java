@@ -8,6 +8,7 @@ import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.exceptions.UserInfoException;
+import com.oocl.parking.repositories.ParkinglotRepository;
 import com.oocl.parking.repositories.RoleRepository;
 import com.oocl.parking.repositories.UserRepository;
 import com.oocl.parking.util.UserUtil;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -34,16 +36,16 @@ public class UserService {
     private  UserUtil userUtil = new UserUtil();
     public List<User> findAllUser(Pageable pageable) {
 
-            return userRepository.findAll(pageable).getContent();
+        return userRepository.findAll(pageable).getContent();
 
     }
 
-   
+
     public User findUserById(Long id) {
         return userRepository.findById(id).orElse(null  );
     }
 
-    
+
     public User addUser(User user) {
         String password =  userUtil.getRandomPassword();
         user.setPassword(password);
@@ -84,14 +86,14 @@ public class UserService {
         ExampleMatcher matcher = ExampleMatcher.matching();
 
         Example<User> ex = Example.of(user, matcher);
-      return userRepository.findAll(ex,pageable).getContent();
+        return userRepository.findAll(ex,pageable).getContent();
     }
 
     public List<Privilege> findAllAuthorities(Long id) {
-          User user = userRepository.getOne(id);
-          Role role = roleRepository.getOne(user.getRole().getId());
-          List<Privilege> privileges = role.getPrivileges();
-          return privileges;
+        User user = userRepository.getOne(id);
+        Role role = roleRepository.getOne(user.getRole().getId());
+        List<Privilege> privileges = role.getPrivileges();
+        return privileges;
     }
 
     public UserDto updateUser(Long id,User newUser) {
@@ -109,6 +111,30 @@ public class UserService {
         }
         UserDto userDto = new UserDto(user);
         userRepository.save(user);
+        return userDto;
+    }
+
+    public List<ParkinglotDto> getParkinglots(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if(user == null || !user.getRole().getRole().equals("parkingboy")){
+            return null;
+        }
+        return user.getParkinglots().stream().map(ParkinglotDto::new).collect(Collectors.toList());
+    }
+
+    public boolean setParkinglotToUser(Long userId, Long lotId) {
+        User user = userRepository.findById(userId).orElse(null);
+        Parkinglot parkinglot = parkinglotRepository.findById(lotId).orElse(null);
+        if(user == null || parkinglot == null || !user.getRole().getRole().equals("parkingboy")){
+            return false;
+        }
+
+        parkinglot.setUser(user);
+        user.addParkinglot(parkinglot);
+
+        parkinglotRepository.save(parkinglot);
+        userRepository.save(user);
+        return true;
     }
     public User validateUser(User user) {
         List<User> userList = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
@@ -122,17 +148,6 @@ public class UserService {
     public  Optional<User> findUserName(String username) {
         return userRepository.findByUsername(username);
 
-        Parkinglot parkinglot = parkinglotRepository.findById(lotId).orElse(null);
-        if(user == null || parkinglot == null || !user.getRole().getRole().equals("parkingboy")){
-            return false;
-        }
-
-        parkinglot.setUser(user);
-        user.addParkinglot(parkinglot);
-
-        parkinglotRepository.save(parkinglot);
-        userRepository.save(user);
-        return true;
     }
 
     public List<User> selectByParam(String name,String email,String phone,Long id) {

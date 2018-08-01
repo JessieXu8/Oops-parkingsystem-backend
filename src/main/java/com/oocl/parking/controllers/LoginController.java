@@ -2,9 +2,7 @@ package com.oocl.parking.controllers;
 
 import com.oocl.parking.entities.User;
 import com.oocl.parking.repositories.UserRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.impl.TextCodec;
+import com.oocl.parking.util.JWTTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,8 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.time.Instant;
-import java.util.Date;
 import java.util.Objects;
 
 
@@ -30,6 +26,11 @@ public class LoginController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+
+    @Autowired
+    private JWTTokenUtils jwtTokenUtils;
+
 
     @PostMapping("/api/v1/login")
     public String login(@RequestBody User user, HttpServletResponse httpResponse) throws Exception{
@@ -47,11 +48,8 @@ public class LoginController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             //生成Token
-            String token = Jwts.builder()
-                    .setSubject(authentication.getName())
-                    .setExpiration(Date.from(Instant.ofEpochSecond(2L)))
-                    .signWith(SignatureAlgorithm.HS512, TextCodec.BASE64.decode("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E="))
-                    .compact();
+            String token = jwtTokenUtils.createToken(authentication,false);
+
             //将Token写入到Http头部
             httpResponse.addHeader("Authorization","Bearer "+token);
             return "Bearer "+token;

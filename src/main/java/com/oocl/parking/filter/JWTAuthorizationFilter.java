@@ -1,11 +1,13 @@
 package com.oocl.parking.filter;
 
 import com.oocl.parking.util.JWTTokenUtils;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.TextCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.util.StringUtils;
@@ -36,37 +38,37 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-//
-//        System.out.println("JwtAuthenticationTokenFilter");
-//        try {
-//
-//            String jwt = resolveToken(req);
-//            if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {            //验证JWT是否正确
-//                Authentication authentication = this.tokenProvider.getAuthentication(jwt);      //获取用户认证信息
-//                SecurityContextHolder.getContext().setAuthentication(authentication);           //将用户保存到SecurityContext
-//            }
-//            chain.doFilter(req, res);
-//        }catch (ExpiredJwtException e){                                     //JWT失效
-//
-//            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//        }
 
+        System.out.println("JwtAuthenticationTokenFilter");
+        try {
 
+            String jwt = resolveToken(req);
+            if (StringUtils.hasText(jwt) && this.tokenProvider.validateToken(jwt)) {            //验证JWT是否正确
+                Authentication authentication = this.tokenProvider.getAuthentication(jwt);      //获取用户认证信息
+                SecurityContextHolder.getContext().setAuthentication(authentication);           //将用户保存到SecurityContext
 
-
-
-        System.out.println("third");
-        String header = req.getHeader("Authorization");
-        System.out.println(header);
-        System.out.println(header == null);
-        if (header == null || !header.startsWith("Bearer")) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            }
             chain.doFilter(req, res);
-            return;
+        }catch (ExpiredJwtException e){                                     //JWT失效
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        chain.doFilter(req, res);
+
+
+
+
+//
+//        System.out.println("third");
+//        String header = req.getHeader("Authorization");
+//        System.out.println(header);
+//        System.out.println(header == null);
+//        if (header == null || !header.startsWith("Bearer")) {
+//            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//            chain.doFilter(req, res);
+//            return;
+//        }
+//        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        chain.doFilter(req, res);
     }
 
 

@@ -72,7 +72,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 
     private String resolveToken(HttpServletRequest request){
-        String bearerToken = request.getHeader("Authorization");         //从HTTP头部获取TOKEN
+        String bearerToken = request.getHeader("authorization");         //从HTTP头部获取TOKEN
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7, bearerToken.length());                              //返回Token字符串，去除Bearer
         }

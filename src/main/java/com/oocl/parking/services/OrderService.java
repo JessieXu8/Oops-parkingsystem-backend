@@ -27,7 +27,7 @@ public class OrderService {
     }
 
     public Orders unparkOrder(Long id) {
-        Orders existOrder = orderRepository.findById(id).get();
+        Orders existOrder = orderRepository.findById(id).orElse(null);
         if (existOrder == null) {
             throw new BadRequestException("无效的订单号");
         }

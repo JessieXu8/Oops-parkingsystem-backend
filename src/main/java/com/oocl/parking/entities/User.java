@@ -18,7 +18,7 @@ public class User {
     private String email;
     private String phone;
     private String account_status;
-    private String work_status;
+    private String workStatus;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
@@ -49,11 +49,11 @@ public class User {
     }
 
     public String getWork_status() {
-        return work_status;
+        return workStatus;
     }
 
-    public void setWork_status(String work_status) {
-        this.work_status = work_status;
+    public void setWork_status(String workStatus) {
+        this.workStatus = workStatus;
     }
 
     public String getUsername() {
@@ -120,25 +120,26 @@ public class User {
         this.name = name;
     }
 
-    public User(String name, String username, String password, String email, String phone, String account_status, String work_status, Role role) {
+
+    public User(String name, String username, String password, String email, String phone, String account_status, String workStatus, Role role) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.account_status = account_status;
-        this.work_status = work_status;
+        this.workStatus = workStatus;
         this.role = role;
     }
 
-    public User(String name, String username, String password, String email, String phone, String account_status, String work_status, Role role, List<Parkinglot> parkinglots) {
+    public User(String name, String username, String password, String email, String phone, String account_status, String workStatus, Role role, List<Parkinglot> parkinglots) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.account_status = account_status;
-        this.work_status = work_status;
+        this.workStatus = workStatus;
         this.role = role;
         this.parkinglots = parkinglots;
     }

@@ -98,8 +98,13 @@ public class UserController {
                                     @RequestParam(required = false) Optional<String> email,
                                     @RequestParam(required = false) Optional<String> phone,
                                     @RequestParam(required = false) Optional<Long> id){
-        System.out.println(name.orElse(null));
         return userService.selectByParam(name.orElse(null),email.orElse(null),phone.orElse(null),id.orElse(null));
 
+    }
+
+    @GetMapping("/AvailableParkingBoys")
+    public  List<User> selectAllAvailablePakingBoys(){
+
+        return userService.selectAllAvailablePakingBoys();
     }
 }

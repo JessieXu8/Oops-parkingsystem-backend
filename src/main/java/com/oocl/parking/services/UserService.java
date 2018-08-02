@@ -145,12 +145,16 @@ public class UserService {
         }
     }
 
-    public  Optional<User> findUserName(String username) {
-        return userRepository.findByUsername(username);
-
-    }
+//    public  Optional<User> findUserName(String username) {
+//        return userRepository.findByUsername(username);
+//
+//    }
 
     public List<User> selectByParam(String name,String email,String phone,Long id) {
         return userRepository.findByNameLikeOrEmailLikeOrPhoneLikeOrId("%"+name+"%","%"+email+"%","%"+phone+"%",id);
+    }
+
+    public List<User> selectAllAvailablePakingBoys() {
+        return userRepository.findByworkStatus("working");
     }
 }

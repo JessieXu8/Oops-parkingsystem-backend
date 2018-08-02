@@ -88,10 +88,8 @@ public class ParkinglotService {
 
     public List<ParkinglotDto> getDashboard(Pageable page, String status) {
 
-        List<ParkinglotDto> parkinglotDtos =
-        parkinglotRepository.findByStatusAndUserNotNull(page, status).stream()
+        return parkinglotRepository.findByStatusAndUserNotNull(page, status).stream()
                 .map(ParkinglotDto::new).collect(Collectors.toList());
-        return parkinglotDtos;
     }
 
     public ParkinglotDto changeNameById(Long id, String name, int size) {
@@ -102,5 +100,24 @@ public class ParkinglotService {
         parkinglotRepository.changeNameAndSizeById(id, size, name);
         parkinglot = parkinglotRepository.findById(id).orElse(null);
         return new ParkinglotDto(parkinglot);
+    }
+
+    public List<ParkinglotDto> getNoUserParkinglots(Pageable page) {
+        return parkinglotRepository.findAllByUserNull(page)
+                .stream().map(ParkinglotDto::new).collect(Collectors.toList());
+    }
+
+    public List<ParkinglotDto> getPakinglotsCombineSearch(String name, String tel, int bt, int st) {
+        return parkinglotRepository.findAllBySizeGreaterThan(bt)
+                .stream().filter(parkinglot ->
+                    (matchName(parkinglot, name) && matchTel(parkinglot, tel)) && parkinglot.getSize()<st
+                ).map(ParkinglotDto::new).collect(Collectors.toList());
+    }
+
+    private boolean matchName(Parkinglot parkinglot, String name){
+        return name == null || parkinglot.getName().equals(name);
+    }
+    private boolean matchTel(Parkinglot parkinglot, String tel){
+        return tel == null || parkinglot.getUser().getPhone().equals(tel);
     }
 }

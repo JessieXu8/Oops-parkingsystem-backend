@@ -4,6 +4,7 @@ package com.oocl.parking.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "user")
 @Entity
@@ -21,6 +22,9 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Parkinglot> parkinglots;
 
 
 
@@ -84,7 +88,13 @@ public class User {
         this.phone = phone;
     }
 
+    public List<Parkinglot> getParkinglots() {
+        return parkinglots;
+    }
 
+    public void setParkinglots(List<Parkinglot> parkinglots) {
+        this.parkinglots = parkinglots;
+    }
 
     public Role getRole() {
         return role;
@@ -119,5 +129,21 @@ public class User {
         this.account_status = account_status;
         this.work_status = work_status;
         this.role = role;
+    }
+
+    public User(String name, String username, String password, String email, String phone, String account_status, String work_status, Role role, List<Parkinglot> parkinglots) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.account_status = account_status;
+        this.work_status = work_status;
+        this.role = role;
+        this.parkinglots = parkinglots;
+    }
+
+    public void addParkinglot(Parkinglot parkinglot) {
+        parkinglots.add(parkinglot  );
     }
 }

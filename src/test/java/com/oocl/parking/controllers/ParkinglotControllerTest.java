@@ -5,6 +5,7 @@ import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.services.ParkinglotService;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,10 @@ public class ParkinglotControllerTest {
     
     @MockBean
     private ParkinglotService parkinglotService;
+
+    @BeforeAll
+    void init(){
+    }
     
     @Test
     public void should_get_parkinglot_dto_list_when_get_parkinglots() throws Exception {

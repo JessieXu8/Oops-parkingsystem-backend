@@ -1,9 +1,12 @@
 package com.oocl.parking.controllers;
 
+import com.oocl.parking.dto.ParkinglotDto;
+import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
 import com.oocl.parking.entities.User;
+import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -71,5 +75,33 @@ public class UserController {
     public ResponseEntity updateUserByRole(@PathVariable Long id,@RequestBody Role role){
         userService.updateUserByRole(id,role);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{id}/parkinglots")
+    @ResponseBody
+    public List<ParkinglotDto> getParkinglotsByUsers(@PathVariable Long id){
+        List<ParkinglotDto> parkinglotDtos = userService.getParkinglots(id);
+        if(parkinglotDtos == null){
+            throw new BadRequestException("no parkinglots");
+        }
+        return parkinglotDtos;
+    }
+
+    @PatchMapping("/{userId}/parkinglots/{lotId}")
+    @ResponseBody
+    public ResponseEntity setParkinglotToUser(@PathVariable Long userId, @PathVariable Long lotId){
+        if(userService.setParkinglotToUser(userId, lotId)){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+        throw new BadRequestException();
+    }
+    @GetMapping("/search")
+    public List<User> selectByParam(@RequestParam(required = false) Optional<String> name,
+                                    @RequestParam(required = false) Optional<String> email,
+                                    @RequestParam(required = false) Optional<String> phone,
+                                    @RequestParam(required = false) Optional<Long> id){
+        System.out.println(name.orElse(null));
+        return userService.selectByParam(name.orElse(null),email.orElse(null),phone.orElse(null),id.orElse(null));
+
     }
 }

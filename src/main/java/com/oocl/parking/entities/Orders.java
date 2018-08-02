@@ -91,4 +91,13 @@ public class Orders {
         this.status = status;
         this.operation = operation;
     }
+
+    public Orders(String carId, String type, String status, String operation, Long boyId, Long parkingLotId) {
+        this.carId = carId;
+        this.type = type;
+        this.status = status;
+        this.operation = operation;
+        this.boyId = boyId;
+        this.parkingLotId = parkingLotId;
+    }
 }

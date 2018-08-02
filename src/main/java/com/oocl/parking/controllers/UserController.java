@@ -1,7 +1,6 @@
 package com.oocl.parking.controllers;
 
 import com.oocl.parking.dto.ParkinglotDto;
-import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 import java.util.List;
 import java.util.Optional;

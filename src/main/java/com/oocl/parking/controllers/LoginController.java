@@ -50,6 +50,8 @@ public class LoginController {
             //生成Token
             String token = jwtTokenUtils.createToken(authentication,false);
 
+
+
             //将Token写入到Http头部
             httpResponse.addHeader("Authorization","Bearer "+token);
             return "Bearer "+token;

@@ -2,6 +2,7 @@ package com.oocl.parking.services;
 
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Parkinglot;
+import com.oocl.parking.repositories.OrderRepository;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import java.util.stream.Collectors;
 public class ParkinglotService {
 
     private ParkinglotRepository parkinglotRepository;
+
+    private OrderRepository orderRepository;
 
     @Autowired
     public ParkinglotService(ParkinglotRepository parkinglotRepository){
@@ -72,6 +75,7 @@ public class ParkinglotService {
             return false;
         }
         parkinglot.park();
+//        orderRepository
         parkinglotRepository.save(parkinglot);
         return true;
     }

@@ -16,12 +16,13 @@ import java.util.Optional;
 public class OrderController {
     @Autowired
     private OrderService orderService;
-
+    //用户停车请求
     @Transactional
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Orders addOrder(@RequestBody Orders orders){
         return orderService.addOrder(orders);
     }
+
 
     @Transactional
     @GetMapping(path = "",produces = MediaType.APPLICATION_JSON_VALUE)

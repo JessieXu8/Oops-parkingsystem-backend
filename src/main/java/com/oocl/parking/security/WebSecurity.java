@@ -51,6 +51,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
 
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().sessionManagement()
@@ -72,6 +73,17 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 //    public static void main(String[] args){
 //        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 //        System.out.println(bCryptPasswordEncoder.encode("admin"));
+//    }
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource()
+//    {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.setAllowedMethods(Arrays.asList("GET","POST","PATCH","PUT","DELETE"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
 //    }
 
 

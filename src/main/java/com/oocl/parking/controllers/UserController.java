@@ -94,6 +94,7 @@ public class UserController {
         }
         throw new BadRequestException();
     }
+    
     @GetMapping("/search")
     public List<User> selectByParam(@RequestParam(required = false) Optional<String> name,
                                     @RequestParam(required = false) Optional<String> email,

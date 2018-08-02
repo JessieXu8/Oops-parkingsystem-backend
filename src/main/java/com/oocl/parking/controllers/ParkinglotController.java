@@ -122,9 +122,9 @@ public class ParkinglotController {
         throw new BadRequestException("parked failed");
     }
 
-    @DeleteMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity unpark(@PathVariable(value = "id") Long id){
-        if(parkinglotService.unpark(id)){
+    @DeleteMapping(path = "/{id}/park/{parkingLotId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity unpark(@PathVariable(value = "id") Long id ,@PathVariable Long parkingLotId){
+        if(parkinglotService.unpark(id,parkingLotId)){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         throw new BadRequestException("unpark failed");

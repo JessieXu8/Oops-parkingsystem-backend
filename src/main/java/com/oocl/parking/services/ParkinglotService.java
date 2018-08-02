@@ -1,6 +1,7 @@
 package com.oocl.parking.services;
 
 import com.oocl.parking.dto.ParkinglotDto;
+import com.oocl.parking.entities.Orders;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.repositories.OrderRepository;
 import com.oocl.parking.repositories.ParkinglotRepository;
@@ -80,12 +81,14 @@ public class ParkinglotService {
         return true;
     }
 
-    public boolean unpark(Long id) {
-        Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+    public boolean unpark(Long id, Long parkingLotId) {
+        Parkinglot parkinglot = parkinglotRepository.findById(parkingLotId).orElse(null);
         if(parkinglot == null || parkinglot.isEmpty()){
             return false;
         }
         parkinglot.unpark();
+        Orders order = orderRepository.findById(id).get();
+        order.setStatus("订单完成");
         parkinglotRepository.save(parkinglot);
         return true;
     }

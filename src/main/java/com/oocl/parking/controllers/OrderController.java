@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -27,11 +28,21 @@ public class OrderController {
     public List<Orders> getOrders(){
         return orderService.getOrders();
     }
-
+    /*抢单or派单*/
     @Transactional
     @PatchMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Orders updateOrderById(@PathVariable Long id){
-        return orderService.updateOrderById(id);
+    public Orders distributeOrderToParkingBoy(@PathVariable Long id,
+                                              @RequestParam(required = false, value = "boyId") Optional<Long> boyId){
+        return orderService.distributeOrderToParkingBoy(id,boyId.get());
     }
+    /*根据订单停车*/
+    @Transactional
+    @PatchMapping(path = "/{id}/park",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Orders distributeOrderToParkingLot(@PathVariable Long id,
+                                              @RequestParam(required = false, value = "parkingLotId") Optional<Long> parkingLotId){
+        return orderService.distributeOrderToParkingLot(id,parkingLotId.get());
+    }
+
+    
 
 }

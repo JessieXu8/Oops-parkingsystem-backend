@@ -17,6 +17,18 @@ public class Orders {
 
     private String operation;
 
+    private Long boyId;
+
+    private Long parkingLotId;
+
+    public Long getParkingLotId() {
+        return parkingLotId;
+    }
+
+    public void setParkingLotId(Long parkingLotId) {
+        this.parkingLotId = parkingLotId;
+    }
+
     public Long getId() {
         return id;
     }
@@ -55,6 +67,14 @@ public class Orders {
 
     public void setOperation(String operation) {
         this.operation = operation;
+    }
+
+    public Long getBoyId() {
+        return boyId;
+    }
+
+    public void setBoyId(Long boyId) {
+        this.boyId = boyId;
     }
 
     public Orders() {

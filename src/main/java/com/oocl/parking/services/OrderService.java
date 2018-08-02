@@ -19,21 +19,21 @@ public class OrderService {
     private ParkinglotService parkinglotService;
 
     public Orders parkOrder(Orders order) {
+        order.setStatus("无人处理");
+        order.setOperation("指派");
+        orderRepository.save(order);
 
-        if (order.getType().equals("存车")) {
-            order.setStatus("无人处理");
-            order.setOperation("指派");
-            orderRepository.save(order);
-        } else if (order.getType().equals("取车")) {
-            Orders existOrder = orderRepository.findByCarId(order.getCarId());
-            if (existOrder == null) {
-                return null;
-            }
-            existOrder.setStatus("停取中");
-            orderRepository.save(existOrder);
-            return existOrder;
-        }
         return order;
+    }
+
+    public Orders unparkOrder(Long id) {
+        Orders existOrder = orderRepository.findById(id).get();
+        if (existOrder == null) {
+            throw new BadRequestException("无效的订单号");
+        }
+        existOrder.setStatus("停取中");
+        existOrder.setType("取车");
+        return existOrder;
     }
 
     public List<Orders> getOrders() {
@@ -52,8 +52,8 @@ public class OrderService {
 //            return null;
 //        }
         Orders order = orderRepository.findById(id).get();
-        if(order.getBoyId()!= null)
-           throw new BadRequestException("order is already distribute");
+        if (order.getBoyId() != null)
+            throw new BadRequestException("order is already distribute");
         order.setBoyId(boyId);
         order.setStatus("停取中");
         order.setOperation(null);
@@ -82,4 +82,6 @@ public class OrderService {
                 .filter(orders -> !(orders.getStatus().equals("订单完成")))
                 .collect(Collectors.toList());
     }
+
+
 }

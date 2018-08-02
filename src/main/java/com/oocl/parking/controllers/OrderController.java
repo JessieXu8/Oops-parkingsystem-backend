@@ -24,10 +24,12 @@ public class OrderController {
         return orderService.parkOrder(orders);
     }
 
-//    //用户请求取车
-//    @Transactional
-//    @PostMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Orders
+    //用户请求取车
+    @Transactional
+    @PostMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public Orders unparkOrder(@PathVariable Long id){
+        return orderService.unparkOrder(id);
+    }
 
     @Transactional
     @GetMapping(path = "",produces = MediaType.APPLICATION_JSON_VALUE)

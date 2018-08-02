@@ -2,6 +2,7 @@ package com.oocl.parking.controllers;
 
 import com.oocl.parking.entities.User;
 import com.oocl.parking.repositories.UserRepository;
+import com.oocl.parking.services.UserService;
 import com.oocl.parking.util.JWTTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Objects;
 
 
@@ -32,8 +34,12 @@ public class LoginController {
     private JWTTokenUtils jwtTokenUtils;
 
 
+    @Autowired
+    private UserService userService;
+
+
     @PostMapping("/api/v1/login")
-    public String login(@RequestBody User user, HttpServletResponse httpResponse) throws Exception{
+    public HashMap<String,String> login(@RequestBody User user, HttpServletResponse httpResponse) throws Exception{
         //通过用户名和密码创建一个 Authentication 认证对象，实现类为 UsernamePasswordAuthenticationToken
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
         //如果认证对象不为空
@@ -54,7 +60,13 @@ public class LoginController {
 
             //将Token写入到Http头部
             httpResponse.addHeader("Authorization","Bearer "+token);
-            return "Bearer "+token;
+
+
+            HashMap<String,String> map = new HashMap<>();
+            map.put("token","Bearer "+token);
+            String role = userService.findByUsername(user.getUsername()).get().getRole().getRole();
+            map.put("role",role);
+            return map;
         }catch (BadCredentialsException authentication){
             throw new Exception("密码错误");
         }

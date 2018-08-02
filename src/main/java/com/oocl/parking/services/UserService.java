@@ -157,4 +157,8 @@ public class UserService {
     public List<User> selectAllAvailablePakingBoys() {
         return userRepository.findByworkStatus("working");
     }
+
+    public  Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }

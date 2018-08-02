@@ -19,14 +19,12 @@ import java.io.IOException;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+   private JWTTokenUtils tokenProvider;
 
-    @Autowired
-    private JWTTokenUtils tokenProvider;
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTTokenUtils tokenProvider) {
         super(authenticationManager);
+        this.tokenProvider = tokenProvider;
     }
 
 

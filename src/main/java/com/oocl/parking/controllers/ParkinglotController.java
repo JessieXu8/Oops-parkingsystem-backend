@@ -56,9 +56,10 @@ public class ParkinglotController {
 
     @GetMapping(path = "/noUser", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParkinglotDto> getNoUserParkinglots(
-            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC)Pageable page
+            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC)Pageable page,
+            @RequestParam String status
             ){
-        return parkinglotService.getNoUserParkinglots(page);
+        return parkinglotService.getNoUserParkinglots(page, status);
     }
 
     @GetMapping(path = "/combineSearch", produces = MediaType.APPLICATION_JSON_VALUE)

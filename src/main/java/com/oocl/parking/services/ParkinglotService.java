@@ -106,8 +106,8 @@ public class ParkinglotService {
         return new ParkinglotDto(parkinglot);
     }
 
-    public List<ParkinglotDto> getNoUserParkinglots(Pageable page) {
-        return parkinglotRepository.findAllByUserNull(page)
+    public List<ParkinglotDto> getNoUserParkinglots(Pageable page, String status) {
+        return parkinglotRepository.findAllByStatusAndUserNull(status, page)
                 .stream().map(ParkinglotDto::new).collect(Collectors.toList());
     }
 

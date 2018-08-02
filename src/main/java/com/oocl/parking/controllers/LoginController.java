@@ -64,8 +64,9 @@ public class LoginController {
 
             HashMap<String,String> map = new HashMap<>();
             map.put("token","Bearer "+token);
-            String role = userService.findByUsername(user.getUsername()).get().getRole().getRole();
-            map.put("role",role);
+            Long UserId = userService.findByUsername(user.getUsername()).get().getId();
+
+            map.put("id",String.valueOf(UserId));
             return map;
         }catch (BadCredentialsException authentication){
             throw new Exception("密码错误");

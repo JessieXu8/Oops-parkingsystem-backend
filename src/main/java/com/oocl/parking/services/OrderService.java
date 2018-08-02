@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -40,6 +41,13 @@ public class OrderService {
     }
 
     public Orders distributeOrderToParkingBoy(Long id, Long boyId) {
+        List<Orders> parkOrderList = orderRepository.findAll()
+                .stream()
+                .filter(order -> (order.getType().equals("停车") &&(order.getBoyId().equals(boyId))))
+                .collect(Collectors.toList());
+        if (parkOrderList.size()!=0){
+            return null;
+        }
         Orders order = orderRepository.findById(id).get();
         order.setBoyId(boyId);
         order.setStatus("停取中");
@@ -56,4 +64,10 @@ public class OrderService {
         return order;
     }
 
+    public List<Orders> getNoHandledOrders() {
+        return orderRepository.findAll()
+                .stream()
+                .filter(order -> order.getStatus().equals("无人处理"))
+                .collect(Collectors.toList());
+    }
 }

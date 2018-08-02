@@ -28,6 +28,13 @@ public class OrderController {
     public List<Orders> getOrders(){
         return orderService.getOrders();
     }
+
+    @Transactional
+    @GetMapping(path = "/nohandle",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Orders> getNoHandledOrders(){
+        return orderService.getNoHandledOrders();
+    }
+
     /*抢单or派单*/
     @Transactional
     @PatchMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)

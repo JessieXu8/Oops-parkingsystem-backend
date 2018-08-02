@@ -115,9 +115,10 @@ public class ParkinglotController {
     }
 
     @PutMapping(path = "/{id}/park", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity park(@PathVariable(value = "id") Long id){
-        if(parkinglotService.park(id)){
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ParkinglotDto park(@PathVariable(value = "id") Long id){
+        ParkinglotDto parkinglotDto = parkinglotService.park(id);
+        if( parkinglotDto != null){
+            return parkinglotDto;
         }
         throw new BadRequestException("parked failed");
     }

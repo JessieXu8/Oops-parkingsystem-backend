@@ -70,15 +70,15 @@ public class ParkinglotService {
         return true;
     }
 
-    public boolean park(Long id) {
+    public ParkinglotDto park(Long id) {
         Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
         if(parkinglot == null || parkinglot.isFull()){
-            return false;
+            return null;
         }
         parkinglot.park();
 //        orderRepository
         parkinglotRepository.save(parkinglot);
-        return true;
+        return new ParkinglotDto(parkinglot);
     }
 
     public boolean unpark(Long id, Long parkingLotId) {

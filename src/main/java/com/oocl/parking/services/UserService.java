@@ -155,7 +155,8 @@ public class UserService {
     }
 
     public List<User> selectAllAvailablePakingBoys() {
-        return userRepository.findByworkStatus("working");
+        Role role = roleRepository.findByRole("parkingboy").get(0);
+        return userRepository.findByworkStatusAndRole("working",role);
     }
 
     public  Optional<User> findByUsername(String username) {

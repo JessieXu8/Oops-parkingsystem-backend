@@ -18,7 +18,7 @@ public class OrderService {
     @Autowired
     private ParkinglotService parkinglotService;
 
-    public Orders addOrder(Orders order) {
+    public Orders parkOrder(Orders order) {
 
         if (order.getType().equals("存车")) {
             order.setStatus("无人处理");
@@ -37,7 +37,10 @@ public class OrderService {
     }
 
     public List<Orders> getOrders() {
-        return orderRepository.findAll();
+        return orderRepository.findAll()
+                .stream()
+                .filter(orders -> !(orders.getStatus().equals("订单完成")))
+                .collect(Collectors.toList());
     }
 
     public Orders distributeOrderToParkingBoy(Long id, Long boyId) {
@@ -49,7 +52,7 @@ public class OrderService {
 //            return null;
 //        }
         Orders order = orderRepository.findById(id).get();
-        if(order.getBoyId()== null)
+        if(order.getBoyId()!= null)
            throw new BadRequestException("order is already distribute");
         order.setBoyId(boyId);
         order.setStatus("停取中");
@@ -70,6 +73,13 @@ public class OrderService {
         return orderRepository.findAll()
                 .stream()
                 .filter(order -> order.getStatus().equals("无人处理"))
+                .collect(Collectors.toList());
+    }
+
+    public List<Orders> getUncompletedOrdersByParkingBoyId(Long parkingBoyId) {
+        return orderRepository.findByBoyId(parkingBoyId)
+                .stream()
+                .filter(orders -> !(orders.getStatus().equals("订单完成")))
                 .collect(Collectors.toList());
     }
 }

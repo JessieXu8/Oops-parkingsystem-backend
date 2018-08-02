@@ -2,6 +2,7 @@ package com.oocl.parking.controllers;
 
 import com.oocl.parking.entities.Orders;
 import com.oocl.parking.services.OrderService;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,24 @@ public class OrderController {
     @Transactional
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Orders parkOrder(@RequestBody Orders orders){
-        return orderService.addOrder(orders);
+        return orderService.parkOrder(orders);
     }
+
+//    //用户请求取车
+//    @Transactional
+//    @PostMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Orders
 
     @Transactional
     @GetMapping(path = "",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Orders> getOrders(){
         return orderService.getOrders();
+    }
+
+    @Transactional
+    @GetMapping(path = "/{parkingBoyId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Orders> getUncompletedOrdersByParkingBoyId(@PathVariable Long parkingBoyId){
+        return orderService.getUncompletedOrdersByParkingBoyId(parkingBoyId);
     }
 
     @Transactional

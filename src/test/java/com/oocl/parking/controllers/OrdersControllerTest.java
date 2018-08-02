@@ -40,7 +40,7 @@ public class OrdersControllerTest {
 //    @Test
 //    public void should_return_order_when_call_addOrder()throws Exception {
 //        Orders orders = new Orders("粤A123456", "存车");
-//        when(orderService.addOrder(any(Orders.class))).thenReturn(orders);
+//        when(orderService.parkOrder(any(Orders.class))).thenReturn(orders);
 //        mockMvc.perform(post("/api/v1/orders").contentType(MediaType.APPLICATION_JSON_VALUE)
 //                .content(mapper.writeValueAsString(orders)))
 //                .andExpect(status().is2xxSuccessful())

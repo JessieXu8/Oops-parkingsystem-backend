@@ -19,10 +19,9 @@ public class OrderController {
     //用户停车请求
     @Transactional
     @PostMapping(path = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Orders addOrder(@RequestBody Orders orders){
+    public Orders parkOrder(@RequestBody Orders orders){
         return orderService.addOrder(orders);
     }
-
 
     @Transactional
     @GetMapping(path = "",produces = MediaType.APPLICATION_JSON_VALUE)

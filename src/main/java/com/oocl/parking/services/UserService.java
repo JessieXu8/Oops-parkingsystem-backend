@@ -1,7 +1,7 @@
 package com.oocl.parking.services;
 
-import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.dto.ParkinglotDto;
+import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.entities.*;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.exceptions.UserInfoException;
@@ -48,7 +48,7 @@ public class UserService {
 
     public User addUser(User user) {
         String password =  userUtil.getRandomPassword();
-        String encryptionPassword = userUtil.getEncryptionPassword(password);
+        String encryptionPassword = UserUtil.getEncryptionPassword(password);
         user.setPassword(encryptionPassword);
         user.setAccount_status("normal");
         User saveUser = userRepository.save(user);
@@ -112,11 +112,13 @@ public class UserService {
             user.setEmail(newUser.getEmail());
             user.setName(newUser.getName());
             user.setPhone(newUser.getPhone());
-            user.setPassword(newUser.getPassword());
+            user.setPassword(UserUtil.getEncryptionPassword(newUser.getPassword()));
 
         }
-        UserDto userDto = new UserDto(user);
+
         userRepository.save(user);
+        user.setPassword(newUser.getPassword());
+        UserDto userDto = new UserDto(user);
         return userDto;
     }
 

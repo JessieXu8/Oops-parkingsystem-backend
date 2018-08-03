@@ -48,9 +48,12 @@ public class UserService {
 
     public User addUser(User user) {
         String password =  userUtil.getRandomPassword();
-        user.setPassword(password);
+        String encryptionPassword = userUtil.getEncryptionPassword(password);
+        user.setPassword(encryptionPassword);
         user.setAccount_status("normal");
-        return userRepository.save(user);
+        User saveUser = userRepository.save(user);
+        saveUser.setPassword(password);
+        return saveUser;
     }
     public void updateUserByRole(Long id,Role role) {
         User user = userRepository.findById(id).get();

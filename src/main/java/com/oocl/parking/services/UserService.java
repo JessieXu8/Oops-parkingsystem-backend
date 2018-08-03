@@ -103,7 +103,9 @@ public class UserService {
     }
 
     public UserDto updateUser(Long id,User newUser) {
+
         User user = userRepository.getOne(id);
+
         if (newUser.getAccount_status() != null) {
             String status = user.getAccount_status().equals("normal") ? "abnormal" : "normal";
             user.setAccount_status(status);
@@ -112,12 +114,9 @@ public class UserService {
             user.setEmail(newUser.getEmail());
             user.setName(newUser.getName());
             user.setPhone(newUser.getPhone());
-            user.setPassword(UserUtil.getEncryptionPassword(newUser.getPassword()));
-
         }
 
         userRepository.save(user);
-        user.setPassword(newUser.getPassword());
         UserDto userDto = new UserDto(user);
         return userDto;
     }

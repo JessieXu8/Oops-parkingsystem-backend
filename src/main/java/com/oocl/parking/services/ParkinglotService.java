@@ -37,7 +37,7 @@ public class ParkinglotService {
 
 
     public ParkinglotDto save(Parkinglot parkinglot) {
-        if(parkinglot.getId() != null)
+        if(parkinglot.getId() != null || parkinglotRepository.findByName(parkinglot.getName()).orElse(null) != null)
             return null;
         parkinglotRepository.save(parkinglot);
         return new ParkinglotDto(parkinglot);

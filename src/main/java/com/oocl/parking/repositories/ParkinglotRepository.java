@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ParkinglotRepository extends JpaRepository<Parkinglot, Long> {
@@ -41,4 +42,6 @@ public interface ParkinglotRepository extends JpaRepository<Parkinglot, Long> {
     @Transactional
     @Query("update Parkinglot as p set p.name = :name, p.size = :size where p.id = :id")
     int changeNameAndSizeById(@Param("id") Long id, @Param("size") int size, @Param("name") String name);
+
+    Optional<Parkinglot> findByName(String name);
 }

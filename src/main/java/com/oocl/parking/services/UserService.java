@@ -52,8 +52,11 @@ public class UserService {
         user.setPassword(encryptionPassword);
         user.setAccount_status("normal");
         User saveUser = userRepository.save(user);
-        saveUser.setPassword(password);
-        return saveUser;
+        Role role = new Role("parkingboy");
+        updateUserByRole(saveUser.getId(),role);
+        User returnUser = findUserById(saveUser.getId());
+        returnUser.setPassword(password);
+        return returnUser;
     }
     public void updateUserByRole(Long id,Role role) {
         User user = userRepository.findById(id).get();

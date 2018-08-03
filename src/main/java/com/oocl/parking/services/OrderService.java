@@ -3,6 +3,7 @@ package com.oocl.parking.services;
 import com.oocl.parking.entities.Orders;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.repositories.OrderRepository;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +18,32 @@ public class OrderService {
     @Autowired
     private ParkinglotService parkinglotService;
 
+
+    private Logger logger = Logger.getLogger(OrderService.class);
+
     public Orders parkOrder(Orders order) {
         order.setStatus("无人处理");
         order.setOperation("指派");
-        orderRepository.save(order);
-
+        Orders save = orderRepository.save(order);
+        logger.info("order id:" + save.getId());
         return order;
     }
 
     public Orders unparkOrder(Long id) {
+        logger.info("unpark order id"+id);
         Orders existOrder = orderRepository.findById(id).get();
+
         if (existOrder == null) {
+            logger.info("order is not exist");
             throw new BadRequestException("无效的订单号");
         }
 //        if (existOrder.getParkinglotId())
         existOrder.setStatus("停取中");
         existOrder.setType("取车");
-        return existOrder;
+        Orders save = orderRepository.save(existOrder);
+        logger.info("change order status"+save.getStatus());
+        logger.info("change order type"+save.getType());
+        return save;
     }
 
     public List<Orders> getOrders() {
@@ -57,7 +67,8 @@ public class OrderService {
         order.setBoyId(boyId);
         order.setStatus("停取中");
         order.setOperation(null);
-        orderRepository.save(order);
+        Orders save = orderRepository.save(order);
+        logger.info("order id:"+save.getId()+"boy id:"+save.getBoyId()+"parkinglot id:"+save.getParkinglotId());
         return order;
     }
 
@@ -85,6 +96,6 @@ public class OrderService {
 
 
     public List<Orders> selectByParam(Long id, String carId, String type, String status) {
-        return orderRepository.findByIdOrCarIdOrTypeOrStatus(id,carId,type,status);
+        return orderRepository.findByIdOrCarIdOrTypeOrStatus(id, carId, type, status);
     }
 }

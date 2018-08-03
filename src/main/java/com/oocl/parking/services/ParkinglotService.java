@@ -5,6 +5,7 @@ import com.oocl.parking.entities.Orders;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.repositories.OrderRepository;
 import com.oocl.parking.repositories.ParkinglotRepository;
+import org.jboss.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,13 @@ import java.util.stream.Collectors;
 @Service("parkinglotService")
 public class ParkinglotService {
 
+
     private ParkinglotRepository parkinglotRepository;
 
+    @Autowired
     private OrderRepository orderRepository;
+
+    private static Logger logger = Logger.getLogger(ParkinglotService.class);
 
     @Autowired
     public ParkinglotService(ParkinglotRepository parkinglotRepository){
@@ -82,14 +87,21 @@ public class ParkinglotService {
 
     public boolean unpark(Long id, Long parkingLotId) {
         Parkinglot parkinglot = parkinglotRepository.findById(parkingLotId).orElse(null);
+
         if(parkinglot == null || parkinglot.isEmpty()){
+            logger.info("parkinglot is empty");
             return false;
         }
+        logger.info("before order:"+parkinglot.getCountOfCars());
         parkinglot.unpark();
+        logger.info("order id:"+id);
         Orders order = orderRepository.findById(id).get();
         order.setStatus("订单完成");
-        orderRepository.save(order);
-        parkinglotRepository.save(parkinglot);
+        logger.info(order.getStatus());
+        Orders save = orderRepository.save(order);
+        logger.info("finish order:"+save.getStatus());
+        Parkinglot save1 = parkinglotRepository.save(parkinglot);
+        logger.info("finish order:"+save1.getCountOfCars());
         return true;
     }
 

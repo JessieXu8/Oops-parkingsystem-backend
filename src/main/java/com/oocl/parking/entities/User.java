@@ -1,8 +1,6 @@
 package com.oocl.parking.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -146,5 +144,13 @@ public class User {
 
     public void addParkinglot(Parkinglot parkinglot) {
         parkinglots.add(parkinglot  );
+    }
+
+    public Parkinglot deleteParkinglot(Long id){
+        Parkinglot parkinglot = parkinglots.stream().filter(lot->lot.getId()==id).findFirst().orElse(null);
+        if(parkinglot == null || !parkinglot.isEmpty()){
+            return null;
+        }
+        return parkinglot;
     }
 }

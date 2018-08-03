@@ -94,6 +94,16 @@ public class UserController {
         }
         throw new BadRequestException();
     }
+
+    @DeleteMapping("/{userId}/parkinglots/{lotId}")
+    @ResponseBody
+    public User deleteParkinglotFromUser(@PathVariable Long userId, @PathVariable Long lotId){
+        User user = userService.deleteParkinglotFromUser(userId, lotId);
+        if(user == null){
+            throw new BadRequestException();
+        }
+        return user;
+    }
     
     @GetMapping("/search")
     public List<User> selectByParam(@RequestParam(required = false) Optional<String> name,

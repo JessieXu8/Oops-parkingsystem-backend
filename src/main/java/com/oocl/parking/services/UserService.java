@@ -174,4 +174,14 @@ public class UserService {
     public  Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    public User deleteParkinglotFromUser(Long userId, Long lotId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if(user == null) return null;
+        Parkinglot parkinglot = user.deleteParkinglot(lotId);
+        if(parkinglot == null) return null;
+        parkinglot.setUser(null);
+        userRepository.save(user);
+        return userRepository.findById(userId).get();
+    }
 }

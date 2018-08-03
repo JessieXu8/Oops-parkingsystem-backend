@@ -101,7 +101,7 @@ public class ParkinglotService {
 
     public ParkinglotDto changeNameById(Long id, String name, int size) {
         Parkinglot parkinglot =parkinglotRepository.findById(id).orElse(null);
-        if(parkinglot == null || parkinglot.getSize() > size){
+        if(parkinglot == null || (parkinglot.getSize() != size && !parkinglot.isEmpty())){
             return null;
         }
         parkinglotRepository.changeNameAndSizeById(id, size, name);

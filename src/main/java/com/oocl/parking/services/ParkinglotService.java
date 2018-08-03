@@ -114,8 +114,8 @@ public class ParkinglotService {
                 .stream().map(ParkinglotDto::new).collect(Collectors.toList());
     }
 
-    public List<ParkinglotDto> getPakinglotsCombineSearch(String name, String tel, int bt, int st) {
-        return parkinglotRepository.findAllBySizeGreaterThan(bt)
+    public List<ParkinglotDto> getPakinglotsCombineSearch(Pageable page, String name, String tel, int bt, int st) {
+        return parkinglotRepository.findAllBySizeGreaterThan(page, bt)
                 .stream().filter(parkinglot ->
                     (matchName(parkinglot, name) && matchTel(parkinglot, tel)) && parkinglot.getSize()<st
                 ).map(ParkinglotDto::new).collect(Collectors.toList());

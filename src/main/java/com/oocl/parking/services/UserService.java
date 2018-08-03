@@ -2,12 +2,10 @@ package com.oocl.parking.services;
 
 import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.dto.ParkinglotDto;
-import com.oocl.parking.entities.Parkinglot;
-import com.oocl.parking.entities.Privilege;
-import com.oocl.parking.entities.Role;
-import com.oocl.parking.entities.User;
+import com.oocl.parking.entities.*;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.exceptions.UserInfoException;
+import com.oocl.parking.repositories.OrderRepository;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import com.oocl.parking.repositories.RoleRepository;
 import com.oocl.parking.repositories.UserRepository;
@@ -33,6 +31,8 @@ public class UserService {
     @Autowired
     private ParkinglotRepository parkinglotRepository;
 
+    @Autowired
+    private OrderRepository orderRepository ;
     private  UserUtil userUtil = new UserUtil();
     public List<User> findAllUser(Pageable pageable) {
 
@@ -156,7 +156,16 @@ public class UserService {
 
     public List<User> selectAllAvailablePakingBoys() {
         Role role = roleRepository.findByRole("parkingboy").get(0);
-        return userRepository.findByworkStatusAndRole("working",role);
+        List<User> workingUsers = userRepository.findByworkStatusAndRole("working",role);
+        List<Orders> orders = orderRepository.findByStatus("停取中");
+        workingUsers.stream().filter(x ->{
+            for(Orders o : orders){
+                if(o.getBoyId()== x.getId())
+                    return false;
+            }
+            return  true;
+        });
+        return  workingUsers;
     }
 
     public  Optional<User> findByUsername(String username) {

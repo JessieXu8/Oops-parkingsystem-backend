@@ -5,7 +5,6 @@ import com.oocl.parking.util.JWTTokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -41,11 +40,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    @Override
-    @Order(1)
-    public void configure(org.springframework.security.config.annotation.web.builders.WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api/v1/login");
-    }
+    //@Override
+//    @Order(1)
+//    public void configure(org.springframework.security.config.annotation.web.builders.WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/api/v1/login");
+//    }
 
 
 
@@ -57,7 +56,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                //.antMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 //.addFilter(new JWTAuthenticationFilter(authenticationManager, userDetailsService))

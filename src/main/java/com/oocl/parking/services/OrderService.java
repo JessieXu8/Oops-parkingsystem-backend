@@ -64,7 +64,7 @@ public class OrderService {
     public Orders distributeOrderToParkingLot(Long id, Long parkingLotId) {
         Orders order = orderRepository.findById(id).get();
         order.setParkinglotId(parkingLotId);
-//        parkinglotService.park(parkingLotId);
+        parkinglotService.park(parkingLotId);
         orderRepository.save(order);
         return order;
     }

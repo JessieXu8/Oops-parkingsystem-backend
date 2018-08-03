@@ -7,7 +7,6 @@ import com.oocl.parking.repositories.OrderRepository;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -89,6 +88,7 @@ public class ParkinglotService {
         parkinglot.unpark();
         Orders order = orderRepository.findById(id).get();
         order.setStatus("订单完成");
+        orderRepository.save(order);
         parkinglotRepository.save(parkinglot);
         return true;
     }

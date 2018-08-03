@@ -31,7 +31,7 @@ public interface ParkinglotRepository extends JpaRepository<Parkinglot, Long> {
 //    @Query("select Parkinglot as p from parkinglot where p.size > :min and p.size < :max order by p.id")
 //    List<Parkinglot> findBetween(int min, int max);
 
-    List<Parkinglot> findAllBySizeGreaterThan(int min);
+    List<Parkinglot> findAllBySizeGreaterThan(Pageable page, int min);
 
     @Modifying(clearAutomatically = true)
     @Transactional

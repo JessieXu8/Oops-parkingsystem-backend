@@ -64,6 +64,7 @@ public class ParkinglotController {
 
     @GetMapping(path = "/combineSearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ParkinglotDto> getParkinglots(
+            @PageableDefault(value = 100, sort = {"id"}, direction = Sort.Direction.ASC)Pageable page,
             @RequestParam(required = false) Optional<String> name,
             @RequestParam(required = false) Optional<String> tel,
             @RequestParam(required = false) Optional<Integer> sizeBt,
@@ -74,7 +75,7 @@ public class ParkinglotController {
         int bt = sizeBt.orElse(0);
         int st = sizeSt.orElse(Integer.MAX_VALUE);
 
-        return parkinglotService.getPakinglotsCombineSearch(_name, _tel, bt, st);
+        return parkinglotService.getPakinglotsCombineSearch(page, _name, _tel, bt, st);
 
     }
 

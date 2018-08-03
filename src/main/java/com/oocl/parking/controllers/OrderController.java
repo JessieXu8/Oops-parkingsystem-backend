@@ -32,6 +32,16 @@ public class OrderController {
     }
 
     @Transactional
+    @GetMapping("/search")
+    public List<Orders> selectByParam(@RequestParam(required = false) Optional<Long> id,
+                                    @RequestParam(required = false) Optional<String> carId,
+                                    @RequestParam(required = false) Optional<String> type,
+                                    @RequestParam(required = false) Optional<String> status){
+
+        return orderService.selectByParam(id.orElse(null),carId.orElse(null),type.orElse(null),status.orElse(null));
+    }
+
+    @Transactional
     @GetMapping(path = "",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Orders> getOrders(){
         return orderService.getOrders();

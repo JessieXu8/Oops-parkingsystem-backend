@@ -19,14 +19,14 @@ public class Orders {
 
     private Long boyId;
 
-    private Long parkingLotId;
+    private Long parkinglotId;
 
-    public Long getParkingLotId() {
-        return parkingLotId;
+    public Long getParkinglotId() {
+        return parkinglotId;
     }
 
-    public void setParkingLotId(Long parkingLotId) {
-        this.parkingLotId = parkingLotId;
+    public void setParkinglotId(Long parkinglotId) {
+        this.parkinglotId = parkinglotId;
     }
 
     public Long getId() {
@@ -98,6 +98,6 @@ public class Orders {
         this.status = status;
         this.operation = operation;
         this.boyId = boyId;
-        this.parkingLotId = parkingLotId;
+        this.parkinglotId = parkingLotId;
     }
 }

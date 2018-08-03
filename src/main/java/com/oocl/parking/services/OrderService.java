@@ -4,7 +4,6 @@ import com.oocl.parking.entities.Orders;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,10 +26,11 @@ public class OrderService {
     }
 
     public Orders unparkOrder(Long id) {
-        Orders existOrder = orderRepository.findById(id).orElse(null);
+        Orders existOrder = orderRepository.findById(id).get();
         if (existOrder == null) {
             throw new BadRequestException("无效的订单号");
         }
+//        if (existOrder.getParkinglotId())
         existOrder.setStatus("停取中");
         existOrder.setType("取车");
         return existOrder;
@@ -63,8 +63,7 @@ public class OrderService {
 
     public Orders distributeOrderToParkingLot(Long id, Long parkingLotId) {
         Orders order = orderRepository.findById(id).get();
-        order.setParkingLotId(parkingLotId);
-        order.setStatus("停好");
+        order.setParkinglotId(parkingLotId);
 //        parkinglotService.park(parkingLotId);
         orderRepository.save(order);
         return order;
@@ -85,4 +84,7 @@ public class OrderService {
     }
 
 
+    public List<Orders> selectByParam(Long id, String carId, String type, String status) {
+        return orderRepository.findByIdOrCarIdOrTypeOrStatus(id,carId,type,status);
+    }
 }

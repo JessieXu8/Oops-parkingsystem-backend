@@ -138,7 +138,9 @@ public class OrderService {
      * @return
      */
     public List<Orders> selectByParam(Long id, String carId, String type, String status) {
-        return orderRepository.findByIdOrCarIdOrTypeOrStatus(id, carId, type, status);
+//        return orderRepository.findByIdOrCarIdOrTypeOrStatus(id, carId, type, status);
+//        "%"+name+"%","%"+email+"%","%"+phone+"%",id
+        return orderRepository.findByIdOrCarIdLikeOrTypeLikeOrStatusLike(id,"%"+carId+"%","%"+type+"%","%"+status+"%");
     }
 
     public List<Orders> getCompletedOrdersByBoyId(Long parkingBoyId) {

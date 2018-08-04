@@ -48,6 +48,12 @@ public class OrderController {
     }
 
     @Transactional
+    @GetMapping(path = "/complete/{parkingBoyId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Orders> getCompletedOrdersByBoyId(@PathVariable Long parkingBoyId){
+        return orderService.getCompletedOrdersByBoyId(parkingBoyId);
+    }
+
+    @Transactional
     @GetMapping(path = "/{parkingBoyId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Orders> getUncompletedOrdersByParkingBoyId(@PathVariable Long parkingBoyId){
         return orderService.getUncompletedOrdersByParkingBoyId(parkingBoyId);

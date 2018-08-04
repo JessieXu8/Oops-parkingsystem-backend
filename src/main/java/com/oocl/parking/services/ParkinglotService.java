@@ -3,6 +3,7 @@ package com.oocl.parking.services;
 import com.oocl.parking.dto.ParkinglotDto;
 import com.oocl.parking.entities.Orders;
 import com.oocl.parking.entities.Parkinglot;
+import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.repositories.OrderRepository;
 import com.oocl.parking.repositories.ParkinglotRepository;
 import org.jboss.logging.Logger;
@@ -95,19 +96,14 @@ public class ParkinglotService {
         Parkinglot parkinglot = parkinglotRepository.findById(parkingLotId).orElse(null);
 
         if(parkinglot == null || parkinglot.isEmpty()){
-            logger.info("parkinglot is empty");
-            return false;
+            throw new BadRequestException("停车场为空");
         }
         logger.info("before order parkinglot countof car:"+parkinglot.getCountOfCars());
         parkinglot.unpark();
-        logger.info("order id:"+id);
         Orders order = orderRepository.findById(id).get();
         order.setStatus("订单完成");
-        logger.info(order.getStatus());
-        Orders save = orderRepository.save(order);
-        logger.info("finish order status:"+save.getStatus());
-        Parkinglot save1 = parkinglotRepository.save(parkinglot);
-        logger.info("finish order parkinglot countof car:"+save1.getCountOfCars());
+        orderRepository.save(order);
+        parkinglotRepository.save(parkinglot);
         return true;
     }
 

@@ -45,23 +45,20 @@ public class OrderService {
      */
     public Orders unparkOrder(Long id) {
         logger.info("unpark order id"+id);
-        Orders existOrder = orderRepository.findById(id).get();
+        Orders existOrder = orderRepository.findById(id).orElse(null);
 
         if (existOrder == null) {
-            logger.info("order is not exist");
+//            logger.info("order is not exist");
             throw new BadRequestException("无效的订单号");
         }
-//        if (existOrder.getParkinglotId())
-        existOrder.setStatus("停取中");
+//        existOrder.setStatus("停取中");
         existOrder.setType("取车");
         Orders save = orderRepository.save(existOrder);
-        logger.info("change order status"+save.getStatus());
-        logger.info("change order type"+save.getType());
         return save;
     }
 
     /**
-     * get all order
+     * get all uncompleted order for web end
      * @return
      */
     public List<Orders> getOrders() {
@@ -71,7 +68,6 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-
     /**
      * distribute Order To ParkingBoy by order and parkingboy id
      * @param id
@@ -79,13 +75,6 @@ public class OrderService {
      * @return
      */
     public Orders distributeOrderToParkingBoy(Long id, Long boyId) {
-//        List<Orders> parkOrderList = orderRepository.findAll()
-//                .stream()
-//                .filter(order -> (order.getType().equals("停车") && (order.getBoyId().equals(boyId))))
-//                .collect(Collectors.toList());
-//        if (parkOrderList.size() != 0) {
-//            return null;
-//        }
         Orders order = orderRepository.findById(id).get();
         if (order.getBoyId() != null)
             throw new BadRequestException("order is already distribute");
@@ -104,8 +93,6 @@ public class OrderService {
      * @return
      */
     public Orders distributeOrderToParkingLot(Long id, Long parkingLotId) {
-        logger.info("order id:"+id);
-        logger.info("parkingLot id:"+parkingLotId);
         Orders order = orderRepository.findById(id).get();
         logger.info("before distributeOrderToParkingLot database order id:"+order.getId()+"car number:"+order.getCarId()+ (order.getType().equals("存车")?"parkingboy need to park car":order.getType().equals("取车")?"customer need to unpark":"order type is unknown"));
         logger.info("order status:"+order.getStatus()+"order boyId:"+order.getBoyId());
@@ -115,11 +102,7 @@ public class OrderService {
             throw new BadRequestException("parked failed");
         }
         else {
-            order.setStatus("完成停车");
-            Orders save = orderRepository.save(order);
-            logger.info(" after distributeOrderToParkingLot database order id:" + save.getId() + "car number:" + save.getCarId() + (save.getType().equals("存车") ? "parkingboy need to park car" : save.getType().equals("取车") ? "customer need to unpark" : "order type is unknown"));
-            logger.info("order status:" + save.getStatus() + "order boyId:" + save.getBoyId());
-            return save;
+            return orderRepository.save(order);
         }
     }
 
@@ -147,7 +130,7 @@ public class OrderService {
     }
 
     /**
-     * find order by carId andsoon...
+     * find order by carId and soon...
      * @param id
      * @param carId
      * @param type
@@ -156,5 +139,11 @@ public class OrderService {
      */
     public List<Orders> selectByParam(Long id, String carId, String type, String status) {
         return orderRepository.findByIdOrCarIdOrTypeOrStatus(id, carId, type, status);
+    }
+
+    public List<Orders> getCompletedOrdersByBoyId(Long parkingBoyId) {
+        return orderRepository.findAll().stream()
+                .filter(orders -> orders.getStatus().equals("订单完成"))
+                .collect(Collectors.toList());
     }
 }

@@ -143,6 +143,11 @@ public class ParkinglotService {
     }
 
     public List<Orders> getOrdersByLotId(Long id) {
-        return orderRepository.findAllByParkinglotId(id);
+        return orderRepository.findAllByParkinglotId(id).stream().filter(order->
+            order.getParkinglotId() != null
+                    && order.getType().equals("存车")
+                    && order.getStatus().equals("停取中")
+        ).collect(Collectors.toList());
+
     }
 }

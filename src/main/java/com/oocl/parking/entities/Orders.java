@@ -20,6 +20,15 @@ public class Orders {
     private Long boyId;
 
     private Long parkinglotId;
+    private String createdTime;
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
 
     public Long getParkinglotId() {
         return parkinglotId;

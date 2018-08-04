@@ -75,14 +75,20 @@ public class ParkinglotService {
     }
 
     public ParkinglotDto park(Long id) {
+        logger.info("parkinglot id:"+id);
         Parkinglot parkinglot = parkinglotRepository.findById(id).orElse(null);
+        logger.info("before parking car parkinglot id:"+parkinglot.getId()+"parkinglot name"+parkinglot.getName()+"parkinglot carCount"+parkinglot.getCountOfCars());
+        logger.info("parkinglot size:"+parkinglot.getSize());
         if(parkinglot == null || parkinglot.isFull()){
-            return null;
+            logger.info("parkinglot is full:");
+           return null;
         }
         parkinglot.park();
 //        orderRepository
-        parkinglotRepository.save(parkinglot);
-        return new ParkinglotDto(parkinglot);
+        Parkinglot save = parkinglotRepository.save(parkinglot);
+        logger.info("after parking car parkinglot id:"+save.getId()+"parkinglot name"+save.getName()+"parkinglot carCount"+save.getCountOfCars());
+        logger.info("parkinglot size:"+save.getSize());
+        return new ParkinglotDto(save);
     }
 
     public boolean unpark(Long id, Long parkingLotId) {
@@ -92,16 +98,16 @@ public class ParkinglotService {
             logger.info("parkinglot is empty");
             return false;
         }
-        logger.info("before order:"+parkinglot.getCountOfCars());
+        logger.info("before order parkinglot countof car:"+parkinglot.getCountOfCars());
         parkinglot.unpark();
         logger.info("order id:"+id);
         Orders order = orderRepository.findById(id).get();
         order.setStatus("订单完成");
         logger.info(order.getStatus());
         Orders save = orderRepository.save(order);
-        logger.info("finish order:"+save.getStatus());
+        logger.info("finish order status:"+save.getStatus());
         Parkinglot save1 = parkinglotRepository.save(parkinglot);
-        logger.info("finish order:"+save1.getCountOfCars());
+        logger.info("finish order parkinglot countof car:"+save1.getCountOfCars());
         return true;
     }
 

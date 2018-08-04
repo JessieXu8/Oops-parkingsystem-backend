@@ -86,15 +86,6 @@ public class UserController {
         return parkinglotDtos;
     }
 
-    @GetMapping("/{id}/parkinglots/isFull")
-    @ResponseBody
-    public ResponseEntity parkinglotsAllFull(@PathVariable Long id){
-        if(userService.allFull(id)){
-            throw new BadRequestException("parking lots are all full");
-        }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
     @PatchMapping("/{userId}/parkinglots/{lotId}")
     @ResponseBody
     public ResponseEntity setParkinglotToUser(@PathVariable Long userId, @PathVariable Long lotId){

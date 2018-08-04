@@ -84,7 +84,7 @@ public class ParkinglotController {
         if(parkinglotDto != null){
             return parkinglotDto;
         }
-        throw new BadRequestException();
+        throw new BadRequestException("停车场创建失败");
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

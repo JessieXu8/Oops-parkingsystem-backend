@@ -7,7 +7,7 @@ userId BIGINT,
 status varchar(10) default ('open')
 );
 
-insert into parkinglot values (1, '停车场A', 10, 0, null, 'open');
+insert into parkinglot values (1, '停车场A', 0, 0, null, 'open');
 insert into parkinglot values (2, '停车场B', 20, 0, 3, 'open');
 insert into parkinglot values (3, '停车场C', 5, 0, null, 'logout');
 insert into parkinglot values (4, '停车场D', 10, 0, 3, 'open');

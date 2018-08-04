@@ -2,7 +2,7 @@ package com.oocl.parking.entities;
 
 import javax.persistence.*;
 
-@Table(name = "order")
+@Table(name = "orders")
 @Entity
 public class Orders {
     @Id
@@ -16,6 +16,27 @@ public class Orders {
     private String status;
 
     private String operation;
+
+    private Long boyId;
+
+    private Long parkinglotId;
+    private String createdTime;
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Long getParkinglotId() {
+        return parkinglotId;
+    }
+
+    public void setParkinglotId(Long parkinglotId) {
+        this.parkinglotId = parkinglotId;
+    }
 
     public Long getId() {
         return id;
@@ -57,6 +78,14 @@ public class Orders {
         this.operation = operation;
     }
 
+    public Long getBoyId() {
+        return boyId;
+    }
+
+    public void setBoyId(Long boyId) {
+        this.boyId = boyId;
+    }
+
     public Orders() {
     }
 
@@ -71,4 +100,15 @@ public class Orders {
         this.status = status;
         this.operation = operation;
     }
+
+    public Orders(String carId, String type, String status, String operation, Long boyId, Long parkingLotId) {
+        this.carId = carId;
+        this.type = type;
+        this.status = status;
+        this.operation = operation;
+        this.boyId = boyId;
+        this.parkinglotId = parkingLotId;
+    }
+
+
 }

@@ -1,6 +1,8 @@
 package com.oocl.parking.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,7 @@ public class Role {
     private Long id;
 
     private String role;
-
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "role", fetch = FetchType.LAZY)
     private List<User> userList;
 
@@ -55,5 +57,11 @@ public class Role {
         this.role = role;
     }
 
+    public List<Privilege> getPrivileges() {
+        return privileges;
+    }
 
+    public void setPrivileges(List<Privilege> privileges) {
+        this.privileges = privileges;
+    }
 }

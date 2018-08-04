@@ -1,7 +1,6 @@
 package com.oocl.parking.controllers;
 
 import com.oocl.parking.dto.ParkinglotDto;
-import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.dto.UserDto;
 import com.oocl.parking.entities.Privilege;
 import com.oocl.parking.entities.Role;
@@ -14,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +31,9 @@ public class UserController {
     public List<User> findAllUsers(@RequestParam(required=false,name="role")String role,Pageable pageable){
         System.out.println("role"+role);
         if(role!=""&&role!=null){
-            return userService.findAllUserByRole(role,pageable);
+            List<User> users =userService.findAllUserByRole(role,pageable);
+            System.out.println(users.size());
+            return users;
         }else {
             return userService.findAllUser(pageable);
         }
@@ -50,6 +51,7 @@ public class UserController {
     public User findUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
+
     @GetMapping("/{id}/authorities")
     @ResponseBody
     public List<Privilege> getAllAuthorities(@PathVariable Long id){
@@ -87,6 +89,15 @@ public class UserController {
         return parkinglotDtos;
     }
 
+    @GetMapping("/{id}/parkinglots/isFull")
+    @ResponseBody
+    public ResponseEntity lotsAllFull(@PathVariable Long id){
+        if(userService.allFull(id)){
+            throw new BadRequestException("all parkinglots full");
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     @PatchMapping("/{userId}/parkinglots/{lotId}")
     @ResponseBody
     public ResponseEntity setParkinglotToUser(@PathVariable Long userId, @PathVariable Long lotId){
@@ -95,13 +106,40 @@ public class UserController {
         }
         throw new BadRequestException();
     }
+
+    @DeleteMapping("/{userId}/parkinglots/{lotId}")
+    @ResponseBody
+    public User deleteParkinglotFromUser(@PathVariable Long userId, @PathVariable Long lotId){
+        User user = userService.deleteParkinglotFromUser(userId, lotId);
+        if(user == null){
+            throw new BadRequestException();
+        }
+        return user;
+    }
+    
     @GetMapping("/search")
     public List<User> selectByParam(@RequestParam(required = false) Optional<String> name,
                                     @RequestParam(required = false) Optional<String> email,
                                     @RequestParam(required = false) Optional<String> phone,
                                     @RequestParam(required = false) Optional<Long> id){
-        System.out.println(name.orElse(null));
         return userService.selectByParam(name.orElse(null),email.orElse(null),phone.orElse(null),id.orElse(null));
 
+    }
+
+    @GetMapping("/AvailableParkingBoys")
+    public  List<User> selectAllAvailablePakingBoys(){
+
+        return userService.selectAllAvailablePakingBoys();
+    }
+
+    @PatchMapping("/{id}/status")
+    public List<User>  workPunchIn(@PathVariable Long id, @RequestParam String state){
+        LocalTime now = LocalTime.now();
+        User user = userService.punchIn(id, state, now);
+        if(user == null){
+            throw new BadRequestException("user not found");
+        }
+        List<User> users = userService.findAllUserByRole("parkingboy",Pageable.unpaged());
+        return users;
     }
 }

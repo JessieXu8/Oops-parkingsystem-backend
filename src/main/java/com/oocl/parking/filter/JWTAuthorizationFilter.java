@@ -2,11 +2,8 @@ package com.oocl.parking.filter;
 
 import com.oocl.parking.util.JWTTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.impl.TextCodec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
@@ -17,20 +14,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+   private JWTTokenUtils tokenProvider;
 
-    @Autowired
-    private JWTTokenUtils tokenProvider;
 
-    public JWTAuthorizationFilter(AuthenticationManager authenticationManager) {
+    public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTTokenUtils tokenProvider) {
         super(authenticationManager);
+        this.tokenProvider = tokenProvider;
     }
 
 
@@ -38,7 +32,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-
+        System.out.println(chain);
         System.out.println("JwtAuthenticationTokenFilter");
         try {
 
@@ -51,6 +45,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             chain.doFilter(req, res);
         }catch (ExpiredJwtException e){                                     //JWT失效
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
         }
 
 
@@ -74,7 +70,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 
     private String resolveToken(HttpServletRequest request){
-        String bearerToken = request.getHeader("Authorization");         //从HTTP头部获取TOKEN
+        String bearerToken = request.getHeader("authorization");         //从HTTP头部获取TOKEN
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7, bearerToken.length());                              //返回Token字符串，去除Bearer
         }
@@ -87,20 +83,20 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
 
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey(TextCodec.BASE64.decode("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E="))
-                    .parseClaimsJws(token.replace("Bearer", ""))
-                    .getBody()
-                    .getSubject();
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
-            }
-            return null;
-        }
-        return null;
-    }
+//    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+//        String token = request.getHeader("Authorization");
+//        if (token != null) {
+//            // parse the token.
+//            String user = Jwts.parser()
+//                    .setSigningKey(TextCodec.BASE64.decode("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E="))
+//                    .parseClaimsJws(token.replace("Bearer", ""))
+//                    .getBody()
+//                    .getSubject();
+//            if (user != null) {
+//                return new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+//            }
+//            return null;
+//        }
+//        return null;
+//    }
 }

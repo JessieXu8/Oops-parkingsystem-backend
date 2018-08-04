@@ -68,6 +68,7 @@ public class UserService {
         {
             throw new BadRequestException("no role match!");
         }
+        System.out.println(role);
         userRepository.save(user);
     }
 
@@ -114,11 +115,27 @@ public class UserService {
             user.setEmail(newUser.getEmail());
             user.setName(newUser.getName());
             user.setPhone(newUser.getPhone());
+            updateByRole(newUser, user);
         }
 
         userRepository.save(user);
         UserDto userDto = new UserDto(user);
         return userDto;
+    }
+
+    private void updateByRole(User newUser, User user) {
+        List<Role> roles = roleRepository.findByRole("manager");
+        List<User> users =  userRepository.findByRole(roles.get(0));
+        if(users.size()>0&& newUser.getRole().getRole().equals("manager"))
+            throw new BadRequestException("manager is exist");
+        List<Role> roleList = roleRepository.findByRole(newUser.getRole().getRole());
+        if(roleList!=null&&roleList.size()!=0){
+            user.setRole(roleList.get(0));
+        }
+        else
+        {
+            throw new BadRequestException("no role match!");
+        }
     }
 
     public List<ParkinglotDto> getParkinglots(Long id) {

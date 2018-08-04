@@ -153,4 +153,13 @@ public class User {
         }
         return parkinglot;
     }
+
+    public boolean lotsAllFull(){
+        for(Parkinglot lot: parkinglots){
+            if(!lot.isFull()){
+                return false;
+            }
+        }
+        return true;
+    }
 }

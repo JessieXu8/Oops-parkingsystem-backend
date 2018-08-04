@@ -188,4 +188,9 @@ public class UserService {
         userRepository.save(user);
         return userRepository.findById(userId).get();
     }
+
+    public boolean allFull(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        return (user == null || user.lotsAllFull());
+    }
 }

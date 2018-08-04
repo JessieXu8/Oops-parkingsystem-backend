@@ -44,8 +44,11 @@ public class LoginController {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
         //如果认证对象不为空
         if (Objects.nonNull(authenticationToken)){
-            userRepository.findByUsername(authenticationToken.getPrincipal().toString())
-                    .orElseThrow(()->new BadCredentialsException("用户不存在"));
+            User user1 = userRepository.findByUsername(authenticationToken.getPrincipal().toString())
+                    .orElseThrow(() -> new BadCredentialsException("用户不存在"));
+            if (user1.getAccount_status().equals("abnormal")){
+                throw new BadCredentialsException("账户被冻结");
+            }
         }
         try {
             //通过 AuthenticationManager（默认实现为ProviderManager）的authenticate方法验证 Authentication 对象

@@ -141,4 +141,8 @@ public class ParkinglotService {
     private boolean matchTel(Parkinglot parkinglot, String tel){
         return tel == null || parkinglot.getUser().getPhone().equals(tel);
     }
+
+    public List<Orders> getOrdersByLotId(Long id) {
+        return orderRepository.findAllByParkinglotId(id);
+    }
 }

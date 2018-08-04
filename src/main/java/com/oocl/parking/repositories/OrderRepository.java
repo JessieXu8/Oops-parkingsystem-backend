@@ -14,4 +14,6 @@ public interface OrderRepository extends JpaRepository<Orders,Long> {
     List<Orders> findByIdOrCarIdOrTypeOrStatus(Long id,String carId,String type,String status);
 
     List<Orders> findByStatus(String status);
+
+    List<Orders> findAllByParkinglotId(Long parkinglotId);
 }

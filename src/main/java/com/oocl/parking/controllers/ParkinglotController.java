@@ -2,9 +2,11 @@ package com.oocl.parking.controllers;
 
 
 import com.oocl.parking.dto.ParkinglotDto;
+import com.oocl.parking.entities.Orders;
 import com.oocl.parking.entities.Parkinglot;
 import com.oocl.parking.exceptions.BadRequestException;
 import com.oocl.parking.services.ParkinglotService;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -132,5 +134,14 @@ public class ParkinglotController {
 //    public  List<ParkinglotDto> findParkingLotsByParkingBoy(){
 //
 //    }
+
+    @GetMapping(path = "/{id}/orders")
+    public List<Orders> getOrdersByLotId(@PathVariable Long id){
+        List<Orders> orders = parkinglotService.getOrdersByLotId(id);
+        if(orders.size() == 0){
+            throw new BadRequestException("no orders in the parking lot");
+        }
+        return orders;
+    }
 
 }

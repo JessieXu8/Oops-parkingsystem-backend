@@ -50,6 +50,9 @@ public class UserService {
 
 
     public User addUser(User user) {
+        User u = userRepository.findByUsername(user.getUsername()).orElse(null);
+        if(u != null) return null;
+
         String password =  userUtil.getRandomPassword();
         String encryptionPassword = UserUtil.getEncryptionPassword(password);
         user.setPassword(encryptionPassword);

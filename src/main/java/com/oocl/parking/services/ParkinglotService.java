@@ -118,8 +118,12 @@ public class ParkinglotService {
         if(parkinglot == null || (parkinglot.getSize() != size && !parkinglot.isEmpty())){
             return null;
         }
+        Parkinglot p = parkinglotRepository.findByName(name).orElse(null    );
+        if( p!=null && p.getId().equals(id)){
+            throw new BadRequestException("停车场名称不能重复");
+        }
         parkinglotRepository.changeNameAndSizeById(id, size, name);
-        parkinglot = parkinglotRepository.findById(id).orElse(null);
+        parkinglot = parkinglotRepository.findById(id).get();
         return new ParkinglotDto(parkinglot);
     }
 

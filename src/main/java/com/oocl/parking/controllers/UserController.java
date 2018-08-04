@@ -70,7 +70,11 @@ public class UserController {
     @ResponseBody
     public  User addUser(@RequestBody User user){
         System.out.println(user.getRole());
-        return userService.addUser(user);
+        User user1 = userService.addUser(user);
+        if(user1 == null){
+            throw new BadRequestException("用户名重复！");
+        }
+        return user1;
     }
     @PatchMapping("/id={id}")
     @ResponseBody

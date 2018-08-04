@@ -120,7 +120,19 @@
 
 ###  10 获取boy历史订单
 + action : get 
-+ url : /complete/{parkingBoyId}
++ url : /api/v1/orders/complete/{parkingBoyId}
++ response : [{order}]
+* * *
+
+### 11 根据订单号，车牌号，类型或状态进行单项搜索
++ action : get
++ url : 
+```
+        /api/v1/orders/search?id=""
+        /api/v1/orders/search?carId=""
+        /api/v1/orders/search?type=""
+        /api/v1/orders/search?status=""
+```
 + response : [{order}]
 * * *
 

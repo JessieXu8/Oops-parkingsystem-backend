@@ -181,7 +181,7 @@ public class UserService {
 
     public List<User> selectAllAvailablePakingBoys() {
         Role role = roleRepository.findByRole("parkingboy").get(0);
-        List<User> workingUsers = userRepository.findByworkStatusAndRole("working",role);
+        List<User> workingUsers = userRepository.findByworkStatusAndRole("上班",role);
         List<Orders> orders = orderRepository.findByStatus("停取中");
         workingUsers.stream().filter(x ->{
             for(Orders o : orders){

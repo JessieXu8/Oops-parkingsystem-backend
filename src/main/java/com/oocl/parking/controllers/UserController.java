@@ -133,12 +133,13 @@ public class UserController {
     }
 
     @PatchMapping("/{id}/status")
-    public User workPunchIn(@PathVariable Long id, @RequestParam String state){
+    public List<User>  workPunchIn(@PathVariable Long id, @RequestParam String state){
         LocalTime now = LocalTime.now();
         User user = userService.punchIn(id, state, now);
         if(user == null){
             throw new BadRequestException("user not found");
         }
-        return user;
+        List<User> users = userService.findAllUserByRole("parkingboy",Pageable.unpaged());
+        return users;
     }
 }

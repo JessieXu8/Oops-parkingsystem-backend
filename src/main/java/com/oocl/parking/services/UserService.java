@@ -16,6 +16,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -209,5 +210,25 @@ public class UserService {
     public boolean allFull(Long id) {
         User user = userRepository.findById(id).orElse(null);
         return (user == null || user.lotsAllFull());
+    }
+
+    public User punchIn(Long id, String state, LocalTime now) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user == null) return null;
+        switch (state) {
+            case "working":
+                if (now.getHour() >= 9) {
+                    user.setWork_status("late");
+                } else {
+                    user.setWork_status("working");
+                }
+                break;
+            default:
+                user.setWork_status(state);
+                break;
+        }
+        userRepository.save(user);
+        return user;
+
     }
 }

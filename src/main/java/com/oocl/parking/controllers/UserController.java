@@ -31,7 +31,9 @@ public class UserController {
     public List<User> findAllUsers(@RequestParam(required=false,name="role")String role,Pageable pageable){
         System.out.println("role"+role);
         if(role!=""&&role!=null){
-            return userService.findAllUserByRole(role,pageable);
+            List<User> users =userService.findAllUserByRole(role,pageable);
+            System.out.println(users.size());
+            return users;
         }else {
             return userService.findAllUser(pageable);
         }

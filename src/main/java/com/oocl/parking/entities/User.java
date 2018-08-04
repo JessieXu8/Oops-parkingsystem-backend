@@ -16,7 +16,7 @@ public class User {
     private String email;
     private String phone;
     private String account_status;
-    private String workStatus = "offWork";
+    private String workStatus;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "role_id")
     private Role role;

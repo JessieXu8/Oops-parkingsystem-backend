@@ -1,41 +1,41 @@
-package com.oocl.parking.controllers;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oocl.parking.entities.Orders;
-import com.oocl.parking.services.OrderService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@RunWith(SpringRunner.class)
-@WebMvcTest(OrderController.class)
-public class OrdersControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper mapper;
-
-    @MockBean
-    private OrderService orderService;
+//package com.oocl.parking.controllers;
+//
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.oocl.parking.entities.Orders;
+//import com.oocl.parking.services.OrderService;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+//import org.springframework.boot.test.mock.mockito.MockBean;
+//import org.springframework.http.MediaType;
+//import org.springframework.test.context.junit4.SpringRunner;
+//import org.springframework.test.web.servlet.MockMvc;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import static org.mockito.ArgumentMatchers.any;
+//import static org.mockito.BDDMockito.given;
+//import static org.mockito.Mockito.when;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+//import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+//import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+//
+//@RunWith(SpringRunner.class)
+//@WebMvcTest(OrderController.class)
+//public class OrdersControllerTest {
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    @Autowired
+//    private ObjectMapper mapper;
+//
+//    @MockBean
+//    private OrderService orderService;
 
 //    @Test
 //    public void should_return_order_when_call_addOrder()throws Exception {
@@ -77,4 +77,4 @@ public class OrdersControllerTest {
 //        mockMvc.perform(patch("/api/v1/orders/1")).andExpect(status().isOk())
 //                .andExpect(jsonPath("carId").value("粤A123456"));
 //    }
-}
+//}

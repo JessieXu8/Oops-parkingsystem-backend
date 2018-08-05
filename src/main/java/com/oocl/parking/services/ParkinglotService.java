@@ -119,7 +119,7 @@ public class ParkinglotService {
             return null;
         }
         Parkinglot p = parkinglotRepository.findByName(name).orElse(null    );
-        if( p!=null && p.getId().equals(id)){
+        if( p!=null && !p.getId().equals(id)){
             throw new BadRequestException("停车场名称不能重复");
         }
         parkinglotRepository.changeNameAndSizeById(id, size, name);

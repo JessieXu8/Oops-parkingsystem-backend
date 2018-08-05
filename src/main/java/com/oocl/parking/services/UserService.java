@@ -164,15 +164,14 @@ public class UserService {
         return true;
     }
 
-    public User validateUser(User user) {
-        List<User> userList = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
-        if (userList != null && userList.size() != 0) {
-            return userList.get(0);
-        } else {
-            throw new UserInfoException();
-        }
-    }
-
+//    public User validateUser(User user) {
+//        <User> userList = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
+//        if (userList != null && userList.size() != 0) {
+//            return userList.get(0);
+//        } else {
+//            throw new UserInfoException();
+//        }
+//    }
 //    public  Optional<User> findUserName(String username) {
 //        return userRepository.findByUsername(username);
 //

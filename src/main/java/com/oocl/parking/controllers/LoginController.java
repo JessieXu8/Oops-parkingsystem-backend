@@ -4,6 +4,7 @@ import com.oocl.parking.entities.User;
 import com.oocl.parking.repositories.UserRepository;
 import com.oocl.parking.services.UserService;
 import com.oocl.parking.util.JWTTokenUtils;
+import com.oocl.parking.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -49,6 +50,7 @@ public class LoginController {
             if (user1.getAccount_status().equals("abnormal")){
                 throw new BadCredentialsException("账户被冻结");
             }
+
         }
         try {
             //通过 AuthenticationManager（默认实现为ProviderManager）的authenticate方法验证 Authentication 对象
@@ -72,7 +74,8 @@ public class LoginController {
             map.put("id",String.valueOf(UserId));
             return map;
         }catch (BadCredentialsException authentication){
-            throw new Exception("密码错误");
+            throw new BadCredentialsException("密码错误");
+//            throw new Exception("密码错误");
         }
     }
 }

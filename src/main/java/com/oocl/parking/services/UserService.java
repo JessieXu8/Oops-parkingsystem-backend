@@ -35,8 +35,9 @@ public class UserService {
     private ParkinglotRepository parkinglotRepository;
 
     @Autowired
-    private OrderRepository orderRepository ;
-    private  UserUtil userUtil = new UserUtil();
+    private OrderRepository orderRepository;
+    private UserUtil userUtil = new UserUtil();
+
     public List<User> findAllUser(Pageable pageable) {
 
         return userRepository.findAll(pageable).getContent();
@@ -45,34 +46,33 @@ public class UserService {
 
 
     public User findUserById(Long id) {
-        return userRepository.findById(id).orElse(null  );
+        return userRepository.findById(id).orElse(null);
     }
 
 
     public User addUser(User user) {
         User u = userRepository.findByUsername(user.getUsername()).orElse(null);
-        if(u != null) return null;
+        if (u != null) return null;
 
-        String password =  userUtil.getRandomPassword();
+        String password = userUtil.getRandomPassword();
         String encryptionPassword = UserUtil.getEncryptionPassword(password);
         user.setPassword(encryptionPassword);
         user.setAccount_status("normal");
         user.setWork_status("下班");
         User saveUser = userRepository.save(user);
         Role role = new Role("parkingboy");
-        updateUserByRole(saveUser.getId(),role);
+        updateUserByRole(saveUser.getId(), role);
         User returnUser = findUserById(saveUser.getId());
         returnUser.setPassword(password);
         return returnUser;
     }
-    public void updateUserByRole(Long id,Role role) {
+
+    public void updateUserByRole(Long id, Role role) {
         User user = userRepository.findById(id).get();
         List<Role> roleList = roleRepository.findByRole(role.getRole());
-        if(roleList!=null&&roleList.size()!=0){
+        if (roleList != null && roleList.size() != 0) {
             user.setRole(roleList.get(0));
-        }
-        else
-        {
+        } else {
             throw new BadRequestException("no role match!");
         }
         System.out.println(role);
@@ -86,12 +86,10 @@ public class UserService {
     public List<User> findAllUserByRole(String role, Pageable pageable) {
 
         List<Role> roleList = roleRepository.findByRole(role);
-        Role userRole = new Role((long) -1,role);
-        if(roleList!=null&&roleList.size()!=0){
+        Role userRole = new Role((long) -1, role);
+        if (roleList != null && roleList.size() != 0) {
             userRole.setId(roleList.get(0).getId());
-        }
-        else
-        {
+        } else {
             throw new BadRequestException("no role match!");
         }
         User user = new User();
@@ -100,7 +98,7 @@ public class UserService {
         ExampleMatcher matcher = ExampleMatcher.matching();
 
         Example<User> ex = Example.of(user, matcher);
-        return userRepository.findAll(ex,pageable).getContent();
+        return userRepository.findAll(ex, pageable).getContent();
     }
 
     public List<Privilege> findAllAuthorities(Long id) {
@@ -110,7 +108,7 @@ public class UserService {
         return privileges;
     }
 
-    public UserDto updateUser(Long id,User newUser) {
+    public UserDto updateUser(Long id, User newUser) {
 
         User user = userRepository.getOne(id);
 
@@ -132,22 +130,20 @@ public class UserService {
 
     private void updateByRole(User newUser, User user) {
         List<Role> roles = roleRepository.findByRole("manager");
-        List<User> users =  userRepository.findByRole(roles.get(0));
-        if(users.size()>0&& newUser.getRole().getRole().equals("manager"))
+        List<User> users = userRepository.findByRole(roles.get(0));
+        if (users.size() > 0 && newUser.getRole().getRole().equals("manager"))
             throw new BadRequestException("manager is exist");
         List<Role> roleList = roleRepository.findByRole(newUser.getRole().getRole());
-        if(roleList!=null&&roleList.size()!=0){
+        if (roleList != null && roleList.size() != 0) {
             user.setRole(roleList.get(0));
-        }
-        else
-        {
+        } else {
             throw new BadRequestException("no role match!");
         }
     }
 
     public List<ParkinglotDto> getParkinglots(Long id) {
         User user = userRepository.findById(id).orElse(null);
-        if(user == null || !user.getRole().getRole().equals("parkingboy")){
+        if (user == null || !user.getRole().getRole().equals("parkingboy")) {
             return null;
         }
         return user.getParkinglots().stream().map(ParkinglotDto::new).collect(Collectors.toList());
@@ -156,7 +152,7 @@ public class UserService {
     public boolean setParkinglotToUser(Long userId, Long lotId) {
         User user = userRepository.findById(userId).orElse(null);
         Parkinglot parkinglot = parkinglotRepository.findById(lotId).orElse(null);
-        if(user == null || parkinglot == null || !user.getRole().getRole().equals("parkingboy")){
+        if (user == null || parkinglot == null || !user.getRole().getRole().equals("parkingboy")) {
             return false;
         }
 
@@ -167,6 +163,7 @@ public class UserService {
         userRepository.save(user);
         return true;
     }
+
     public User validateUser(User user) {
         List<User> userList = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
         if (userList != null && userList.size() != 0) {
@@ -181,8 +178,8 @@ public class UserService {
 //
 //    }
 
-    public List<User> selectByParam(String name,String email,String phone,Long id) {
-        return userRepository.findByNameLikeOrEmailLikeOrPhoneLikeOrId("%"+name+"%","%"+email+"%","%"+phone+"%",id);
+    public List<User> selectByParam(String name, String email, String phone, Long id) {
+        return userRepository.findByNameLikeOrEmailLikeOrPhoneLikeOrId("%" + name + "%", "%" + email + "%", "%" + phone + "%", id);
     }
 
     public List<User> selectAllAvailablePakingBoys() {
@@ -190,27 +187,31 @@ public class UserService {
         Collection<String> workingStatus = new ArrayList<>();
         workingStatus.add("上班");
         workingStatus.add("迟到");
-        List<User> workingUsers = userRepository.findByWorkStatusInAndRole(workingStatus,role);
+        List<User> workingUsers = userRepository.findByWorkStatusInAndRole(workingStatus, role);
         List<Orders> orders = orderRepository.findByStatus("停取中");
-        workingUsers.stream().filter(x ->{
-            for(Orders o : orders){
-                if(o.getBoyId()== x.getId())
+
+        return workingUsers.stream().filter(x -> {
+            if (allFull(x.getId())) {
+                return false;
+            }
+            for (Orders o : orders) {
+                if (o.getBoyId() == x.getId())
                     return false;
             }
-            return  true;
-        });
-        return  workingUsers;
+            return true;
+        }).collect(Collectors.toList());
+
     }
 
-    public  Optional<User> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     public User deleteParkinglotFromUser(Long userId, Long lotId) {
         User user = userRepository.findById(userId).orElse(null);
-        if(user == null) return null;
+        if (user == null) return null;
         Parkinglot parkinglot = user.deleteParkinglot(lotId);
-        if(parkinglot == null) return null;
+        if (parkinglot == null) return null;
         parkinglot.setUser(null);
         userRepository.save(user);
         return userRepository.findById(userId).get();

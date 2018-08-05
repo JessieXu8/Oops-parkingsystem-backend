@@ -226,6 +226,7 @@ public class UserService {
         if (user == null) return null;
         switch (state) {
             case "上班":
+                System.out.println(now.getHour());
                 if (now.getHour() >= 9) {
                     user.setWork_status("迟到");
                 } else {

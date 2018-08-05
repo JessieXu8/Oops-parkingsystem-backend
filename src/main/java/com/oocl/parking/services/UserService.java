@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,10 +50,14 @@ public class UserService {
 
 
     public User addUser(User user) {
+        User u = userRepository.findByUsername(user.getUsername()).orElse(null);
+        if(u != null) return null;
+
         String password =  userUtil.getRandomPassword();
         String encryptionPassword = UserUtil.getEncryptionPassword(password);
         user.setPassword(encryptionPassword);
         user.setAccount_status("normal");
+        user.setWork_status("下班");
         User saveUser = userRepository.save(user);
         Role role = new Role("parkingboy");
         updateUserByRole(saveUser.getId(),role);
@@ -181,7 +187,10 @@ public class UserService {
 
     public List<User> selectAllAvailablePakingBoys() {
         Role role = roleRepository.findByRole("parkingboy").get(0);
-        List<User> workingUsers = userRepository.findByworkStatusAndRole("上班",role);
+        Collection<String> workingStatus = new ArrayList<>();
+        workingStatus.add("上班");
+        workingStatus.add("迟到");
+        List<User> workingUsers = userRepository.findByWorkStatusInAndRole(workingStatus,role);
         List<Orders> orders = orderRepository.findByStatus("停取中");
         workingUsers.stream().filter(x ->{
             for(Orders o : orders){
@@ -216,11 +225,11 @@ public class UserService {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) return null;
         switch (state) {
-            case "working":
+            case "上班":
                 if (now.getHour() >= 9) {
-                    user.setWork_status("late");
+                    user.setWork_status("迟到");
                 } else {
-                    user.setWork_status("working");
+                    user.setWork_status("上班");
                 }
                 break;
             default:

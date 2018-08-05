@@ -118,8 +118,12 @@ public class ParkinglotService {
         if(parkinglot == null || (parkinglot.getSize() != size && !parkinglot.isEmpty())){
             return null;
         }
+        Parkinglot p = parkinglotRepository.findByName(name).orElse(null    );
+        if( p!=null && p.getId().equals(id)){
+            throw new BadRequestException("停车场名称不能重复");
+        }
         parkinglotRepository.changeNameAndSizeById(id, size, name);
-        parkinglot = parkinglotRepository.findById(id).orElse(null);
+        parkinglot = parkinglotRepository.findById(id).get();
         return new ParkinglotDto(parkinglot);
     }
 
@@ -129,7 +133,7 @@ public class ParkinglotService {
     }
 
     public List<ParkinglotDto> getPakinglotsCombineSearch(Pageable page, String name, String tel, int bt, int st) {
-        return parkinglotRepository.findAllBySizeGreaterThan(page, bt)
+        return parkinglotRepository.findAllBySizeGreaterThanEqual(page, bt)
                 .stream().filter(parkinglot ->
                     (matchName(parkinglot, name) && matchTel(parkinglot, tel)) && parkinglot.getSize()<st
                 ).map(ParkinglotDto::new).collect(Collectors.toList());

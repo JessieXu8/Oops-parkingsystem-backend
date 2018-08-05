@@ -11,3 +11,6 @@ deploy:
   provider: heroku
   api_key: 3e79ccab-baff-49b6-a173-3bf5b7d222fc
   app: parkinglot-backend
+  on:
+        repo: beeMonkey/Oops-parkingsystem-backend
+        branch: tmyBasicStack
